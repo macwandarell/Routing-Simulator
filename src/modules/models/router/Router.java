@@ -1,9 +1,11 @@
 package modules.models.router;
 import modules.network.ip.Ipv4;
-public class Router {
+import modules.models.Model;
+public class Router extends Model {
     private Ipv4 ipv4;
     private String id;
     public Router(String ipv4,String id){
+        super(id);
         try{
         this.ipv4= new Ipv4(ipv4);}
         catch (IllegalArgumentException e){
@@ -12,12 +14,11 @@ public class Router {
         this.id=id;
     }
     public String getId(){
-        return this.id;
-    }
+        return this.id;}
     public String getIpv4(){
         return this.ipv4.getIpString();
     }
-    public String setId(String id){
+    public void setId(String id){
         this.id=id;
     }
 }
