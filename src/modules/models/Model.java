@@ -10,4 +10,6 @@ public class Model{
     public void setModelID(String modelID){
         this.modelID=modelID;
     }
+    public String getType(){return null;}
+    public void setIpv4(String ipv4){}
 }

@@ -46,4 +46,8 @@ public class Dhcp extends Model{
         System.out.println("Failed to assign ip" + e.getMessage());}
         return null;
     }
+    @Override
+    public String getType(){
+        return "DHCP";
+    }
 }
