@@ -17,6 +17,9 @@ public class Main{
             manager1.addIpToDhcp(in.next());
         }
         in.close();
+        Router router1 = new Router("R002");
+        manager1.addEntity(router1);
+
         manager1.addEntity(router);
 
     }

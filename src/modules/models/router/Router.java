@@ -5,7 +5,7 @@ public class Router extends Model {
     private Ipv4 ipv4;
     private String id;
     public Router(String ipv4,String id){
-        super(id);
+        super();
         try{
         this.ipv4= new Ipv4(ipv4);}
         catch (IllegalArgumentException e){
@@ -14,7 +14,7 @@ public class Router extends Model {
         this.id=id;
     }
     public Router(String id){
-    super(id);
+    super();
     this.id=id;}
     public String getId(){
         return this.id;}

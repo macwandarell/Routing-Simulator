@@ -7,7 +7,7 @@ public class Dhcp extends Model{
     private Ipv4 ipv4;
     private ArrayList<Ipv4> ip_list = new ArrayList<Ipv4>();
     public Dhcp(String ipv4, String id){
-        super(id);
+        super();
         try{
             this.ipv4= new Ipv4(ipv4);}
         catch (IllegalArgumentException e){
