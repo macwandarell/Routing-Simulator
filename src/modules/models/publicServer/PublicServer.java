@@ -41,4 +41,8 @@ public class PublicServer extends Model{
     public String getDomainName(){
         return this.domainName;
     }
+    @Override
+    public String getType(){
+        return "PublicServer";
+    }
 }

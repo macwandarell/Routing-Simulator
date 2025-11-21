@@ -22,7 +22,6 @@ public class Ipv4{
         this.octet_2 = octet_2;
         this.octet_3 = octet_3;
         this.octet_4 = octet_4;
-        System.out.println("Created IPv4 address:"+getIpString());
     }
     public String getIpString(){
         String ip= Integer.toString(octet_1)+"."+Integer.toString(octet_2)+"."+Integer.toString(octet_3)+"."+Integer.toString(octet_4);
