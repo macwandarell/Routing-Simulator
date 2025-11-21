@@ -21,7 +21,7 @@ public class DNSServer extends Model {
 
     // Returns true if domain is valid (not already taken)
     public boolean validateDomain(String domainName){
-        return !dnsRecords.containsKey(domainName);
+        return !dnsRecords.containsKey(normalize(domainName));
     }
 
     // Adds a DNS record if the domain name is valid
@@ -44,7 +44,6 @@ public class DNSServer extends Model {
         }
         return false; // Return false if nothing was deleted
     }
-
 
     // This prints the classic Windows/Linux DNS output style
     public void performNsLookup(String domainName) {
