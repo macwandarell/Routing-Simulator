@@ -10,6 +10,7 @@ public class GlobeManager{
     public GlobeManager(){}
     public Network grid=new Network();
     public Algo dijkstra=new Algo(grid);
+    public ArrayList<Ipv4> publicIps=new ArrayList<Ipv4>();
 
     public void addManager(Manager manager){
         managers.add(manager);
