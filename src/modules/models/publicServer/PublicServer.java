@@ -2,7 +2,7 @@ package modules.models.publicServer;
 import modules.network.ip.Ipv4;
 import modules.models.Model;
 
-public class PublicServr extends Model{
+public class PublicServer extends Model{
     private Ipv4 ipv4;
     private String id;
     private String domainName;
@@ -15,7 +15,7 @@ public class PublicServr extends Model{
         }
         this.id=id;
     }
-    public PublicServr(String id){
+    public PublicServer(String id){
         super();
         this.id=id;
     }
