@@ -2,15 +2,33 @@ package modules.network.Link;
 
 import modules.models.Model;
 
+// Link class to provide a physical Layer between two models
 public class Link {
-    private Model first;
-    private Model second;
-    private int bandwidth;
+    private Model first; // endpoint of link
+    private Model second; // endpoint of link
+    private double bandwidth; // link bandwidth speed
+    private LinkSpeedType type; // Link bandwidth speed unit
 
-    public Link(Model first,Model second, int bandwidth){
+    public Link(Model first,Model second, double bandwidth, String type){
         this.first = first;
         this.second = second;
         this.bandwidth = bandwidth;
+
+        if (type.toLowerCase().equals("kbps")) {
+            this.type = LinkSpeedType.KBPS;
+        } else if (type.toLowerCase().equals("mbps")) {
+            this.type = LinkSpeedType.MBPS;
+        } else if (type.toLowerCase().equals("gbps")) {
+            this.type = LinkSpeedType.GBPS;
+        } else if (type.toLowerCase().equals("tbps")) {
+            this.type = LinkSpeedType.TBPS;
+        } else {
+            throw new IllegalArgumentException("Invalid Speed type please enter values from {Kbps, Mbps, Gbps, Tbps}.");
+        }
+    }
+
+    public double getSpeed(LinkSpeedType type){
+        return this.bandwidth * Math.pow(1024,this.type.ordinal()-type.ordinal());
     }
 
     public Model getFirst() {
@@ -29,11 +47,19 @@ public class Link {
         this.second = second;
     }
 
-    public int getBandwidth() {
+    public double getBandwidth() {
         return bandwidth;
     }
 
-    public void setBandwidth(int bandwidth) {
+    public void setBandwidth(double bandwidth) {
         this.bandwidth = bandwidth;
+    }
+
+    public LinkSpeedType getType() {
+        return type;
+    }
+
+    public void setType(LinkSpeedType type) {
+        this.type = type;
     }
 }
