@@ -1,15 +1,18 @@
 package modules.models.DnsServer;
-import modules.network.ip.Ipv4;
 
+import modules.models.Model;
+import modules.network.ip.Ipv4;
 import java.util.HashMap;
 
-public class DNSServer {
+public class DNSServer extends Model {
     HashMap<String,String> dnsRecords; // Maps domain names to IP addresses
+    Ipv4 ipv4;
 
     // Constructor
-    public DNSServer(){
+    public DNSServer(String ipv4){
+        super();
+        this.ipv4 = new Ipv4(ipv4);
         dnsRecords=new HashMap<String,String>();
-
     }
 
     // Returns true if domain is valid (not already taken)
