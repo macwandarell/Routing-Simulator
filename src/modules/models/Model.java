@@ -3,7 +3,7 @@ public class Model{
     private static int publicID=0;
     private int modelID;
     public Model(){
-        modelID=publicID;
+        modelID=publicID;// i guess need to comment ask vedant
         publicID=publicID+1;
 
     }

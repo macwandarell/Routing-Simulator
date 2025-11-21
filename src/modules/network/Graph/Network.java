@@ -2,6 +2,7 @@ package modules.network.Graph;
 
 import modules.models.Model;
 import modules.network.Link.Link;
+import modules.network.Link.LinkSpeedType;
 
 import java.util.ArrayList;
 
@@ -16,6 +17,7 @@ public class Network {
 
     public void addNode(Model node)
     {
+        node.setModelID(adjList.size());
         adjList.add(new ArrayList<>());
     }
 
@@ -23,17 +25,22 @@ public class Network {
         return adjList;
     }
 
-    public void setAdjList(ArrayList<ArrayList<Link>> adjList) {
-        this.adjList = adjList;
-    }
+//    public void setAdjList(ArrayList<ArrayList<Link>> adjList) {
+//        this.adjList = adjList;
+//    }
 
     public int getAdjSize()
     {
         return adjList.size();
     }
 
-    public void addEgde(Link edge)
+    public void addEdge(Link edge)
     {
-        adjList.get(edge.getFirst().getModelID()).add(edge);
+        int u=edge.getFirst().getModelID();
+        int v=edge.getSecond().getModelID();
+        // as this is an undirected graph we need to add both edges
+        Link reverseEdge=new Link(edge.getSecond(),edge.getFirst(),edge.getSpeed(LinkSpeedType.KBPS),"Kbps");
+        adjList.get(u).add(edge);
+        adjList.get(v).add(reverseEdge);
     }
 }
