@@ -1,18 +1,39 @@
 package modules.network.Graph;
 
+import modules.models.Model;
+import modules.network.Link.Link;
+
 import java.util.ArrayList;
 
 public class Network {
-    ArrayList<ArrayList<int[]>> adjlist;
+    ArrayList<ArrayList<Link>> adjList;
     // stored as [  u->[{v,w1},{a,w2}]  ]
 
-    public void addnode(int modelid)
+    public Network()
     {
-        adjlist.add(new ArrayList<>());
+        adjList=new ArrayList<>();
     }
 
-    public void addegde(int fromid,int toid,int weigth)
+    public void addNode(Model node)
     {
-        adjlist.get(fromid).add(new int[]{toid,weigth});
+        adjList.add(new ArrayList<>());
+    }
+
+    public ArrayList<ArrayList<Link>> getAdjList() {
+        return adjList;
+    }
+
+    public void setAdjList(ArrayList<ArrayList<Link>> adjList) {
+        this.adjList = adjList;
+    }
+
+    public int getAdjSize()
+    {
+        return adjList.size();
+    }
+
+    public void addEgde(Link edge)
+    {
+        adjList.get(edge.getFirst().getModelID()).add(edge);
     }
 }
