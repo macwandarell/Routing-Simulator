@@ -43,4 +43,8 @@ public class Network {
         adjList.get(u).add(edge);
         adjList.get(v).add(reverseEdge);
     }
+
+    // add all the methods mentioned in SRS
+
+
 }
