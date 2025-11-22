@@ -18,3 +18,5 @@ public class Model{
     public String getType(){return null;}
     public void setIpv4(String ipv4){}
 }
+
+//add model directly to network on adding or else error can come

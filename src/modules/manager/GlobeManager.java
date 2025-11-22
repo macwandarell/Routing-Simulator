@@ -1,6 +1,6 @@
 package modules.manager;
 import modules.manager.Manager;
-//import modules.network.Graph.Algo;
+import modules.network.Graph.Algo;
 import modules.network.Graph.Network;
 import modules.network.ip.Ipv4;
 import java.util.ArrayList;
@@ -21,7 +21,7 @@ public class GlobeManager{
         }
     }
     public Network grid=new Network();
-    //public Algo dijkstra=new Algo(grid);
+    public Algo dijkstra=new Algo(grid);
     public void addManager(Manager manager){
         manager.setPublicIp(assignIp());
         managers.add(manager);
