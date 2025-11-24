@@ -3,6 +3,7 @@ package modules.models.DnsServer;
 import modules.models.Model;
 import modules.network.ip.Ipv4;
 import java.util.HashMap;
+import java.io.*;
 
 public class DNSServer extends Model {
     HashMap<String,String> dnsRecords; // Maps domain names to IP addresses
@@ -46,19 +47,14 @@ public class DNSServer extends Model {
     }
 
     // This prints the classic Windows/Linux DNS output style
-    public void performNsLookup(String domainName) {
+    public String performNsLookup(String domainName) {
         String cleanDomain = normalize(domainName);
         String ip = dnsRecords.get(cleanDomain);
 
-        System.out.println("Server:  RoutingSimulator-DNS");
-        System.out.println("Address: 127.0.0.1 (Simulated)");
-        System.out.println();
-
         if (ip != null) {
-            System.out.println("Name:    " + cleanDomain);
-            System.out.println("Address: " + ip);
+            return ip;
         } else {
-            System.out.println("*** UnKnown can't find " + domainName + ": Non-existent domain");
+            return null;
         }
     }
 
@@ -71,5 +67,26 @@ public class DNSServer extends Model {
             throw new IllegalArgumentException("Ping Error: Host not found [" + domainName + "]");
         }
         return new Ipv4(ipAddress);
+    }
+
+    private void saveRecords()
+    {
+        String filePath = "dns_records.txt";
+        // The "try(...)" syntax automatically closes the file when done (very important!)
+        try(BufferedWriter writer = new BufferedWriter(new FileWriter(filePath)))
+        {
+            for (HashMap.Entry<String, String> entry : dnsRecords.entrySet())
+            {
+                String Domain = entry.getKey();
+                String IpAddress = entry.getValue();
+
+                String line = Domain + "," + IpAddress;
+
+                writer.write(line);
+                writer.newLine():
+            }
+        }
+
+
     }
 }
