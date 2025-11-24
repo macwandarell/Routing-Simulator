@@ -1,4 +1,4 @@
-package modules.models.publicServer;
+package com.example.routingSimulator.modules.models.publicServer;
 import modules.network.ip.Ipv4;
 import modules.models.Model;
 

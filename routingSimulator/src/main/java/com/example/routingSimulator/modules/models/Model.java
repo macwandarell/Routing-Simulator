@@ -1,4 +1,4 @@
-package modules.models;
+package com.example.routingSimulator.modules.models;
 public class Model{
     private static int publicID=0;
     private int modelID;

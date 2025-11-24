@@ -1,4 +1,4 @@
-package modules.models.dhcp;
+package com.example.routingSimulator.modules.models.dhcp;
 import modules.network.ip.Ipv4;
 import modules.models.Model;
 import java.util.ArrayList;

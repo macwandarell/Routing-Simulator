@@ -1,4 +1,4 @@
-package modules.models.device;
+package com.example.routingSimulator.modules.models.device;
 
 import modules.models.Model;
 import modules.network.ip.Ipv4;

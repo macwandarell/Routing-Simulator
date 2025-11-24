@@ -1,4 +1,4 @@
-package modules.models.router;
+package com.example.routingSimulator.modules.models.router;
 import modules.network.ip.Ipv4;
 import modules.models.Model;
 public class Router extends Model {
