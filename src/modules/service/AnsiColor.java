@@ -1,4 +1,4 @@
-package modules.services.AnsiColor; 
+package modules.services;
 
 public enum AnsiColor {
     RESET("\u001B[0m"),
