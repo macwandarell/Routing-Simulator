@@ -1,4 +1,4 @@
-package modules.network.ip;
+package com.example.routingSimulator.modules.network.ip;
 
 import java.io.FileWriter;
 import java.io.IOException;

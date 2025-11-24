@@ -1,4 +1,4 @@
-package modules.network.ip;
+package com.example.routingSimulator.modules.network.ip;
 
 public class Ipv4{
     //octets are defined from left as 1 to right as 4

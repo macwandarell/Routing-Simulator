@@ -1,8 +1,8 @@
 package com.example.routingSimulator.modules.network.Graph;
 
 import modules.models.Model;
-import modules.network.Link.Link;
-import modules.network.Link.LinkSpeedType;
+import com.example.routingSimulator.modules.network.Link.Link;
+import com.example.routingSimulator.modules.network.Link.LinkSpeedType;
 
 import java.util.ArrayList;
 
