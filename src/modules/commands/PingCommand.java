@@ -1,5 +1,6 @@
-package modules.manager;
+package modules.commands;
 
+import modules.manager.GlobeManager;
 import modules.network.Graph.Algo;
 import java.util.concurrent.ThreadLocalRandom;
 
