@@ -1,4 +1,4 @@
-package modules.commands;
+package com.example.routingSimulator.modules.commands;
 
 import modules.manager.GlobeManager;
 import modules.network.Graph.Algo;
