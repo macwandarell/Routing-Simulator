@@ -1,4 +1,4 @@
-package modules.network.Link;
+package com.example.routingSimulator.modules.network.Link;
 import modules.models.Model;
 
 // Link class to provide a physical Layer between two models
