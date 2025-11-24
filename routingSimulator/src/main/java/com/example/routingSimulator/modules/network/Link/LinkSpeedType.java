@@ -1,4 +1,4 @@
-package modules.network.Link;
+package com.example.routingSimulator.modules.network.Link;
 
 // Enum to represent different link speed types
 public enum LinkSpeedType {
