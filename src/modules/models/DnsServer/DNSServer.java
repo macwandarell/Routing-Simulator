@@ -19,6 +19,11 @@ public class DNSServer extends Model
         loadRecords();
     }
 
+    public String getServerIP()
+    {
+        return this.ipv4.getIpString();
+    }
+
     public HashMap<String, String> getDnsRecords() {
         return dnsRecords;
     }
