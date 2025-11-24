@@ -12,20 +12,22 @@ public class HomeService {
 
     public String getWelcomeMessage() {
         StringBuilder sb = new StringBuilder();
+
         try (BufferedReader reader = new BufferedReader(new FileReader("modules/terminal/banners/logo.txt"))) {
             String line;
             while ((line = reader.readLine()) != null) {
-                sb.append(line).append("\n");
+                sb.append(line).append("<br>"); // HTML line break
             }
         } catch (IOException e) {
             e.printStackTrace();
-            sb.append("Error loading welcome message.\n");
+            sb.append("Error loading welcome message.<br>");
         }
 
-        sb.append(AnsiColor.YELLOW.wrap("Here is a list of the available commands (case doesn't matter)\n"));
-        sb.append(AnsiColor.RED.wrap("/help"))
-                .append(AnsiColor.YELLOW.wrap(" - prints a list of executable commands"));
+        sb.append("<span style='color:blue'>Here is a list of the available commands (case doesn't matter)</span><br>");
+        sb.append("<span style='color:red'>/help</span><span style='color:blue'> - prints a list of executable commands</span><br>");
+        sb.append("<span style='color:red'>/play</span><span style='color:blue'> - goes to playground page</span><br>");
 
         return sb.toString();
     }
+
 }
