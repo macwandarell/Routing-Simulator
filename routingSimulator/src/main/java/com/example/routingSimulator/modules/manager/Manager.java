@@ -1,8 +1,8 @@
-package modules.manager;
-import modules.models.Model;
+package com.example.routingSimulator.modules.manager;
+import com.example.routingSimulator.modules.models.Model;
 import java.util.ArrayList;
-import modules.models.dhcp.Dhcp;
-import modules.models.publicServer.PublicServer;
+import com.example.routingSimulator.modules.models.dhcp.Dhcp;
+import com.example.routingSimulator.modules.models.publicServer.PublicServer;
 
 
 public class Manager{
