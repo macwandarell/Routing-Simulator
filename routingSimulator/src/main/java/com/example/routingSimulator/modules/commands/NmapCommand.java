@@ -1,8 +1,8 @@
 package com.example.routingSimulator.modules.manager;
 
-import modules.models.DnsServer.DNSServer;
-import modules.network.ip.Ipv4;
-import modules.models.device.Device;
+import com.example.routingSimulator.modules.network.dns.DNSServer;
+import com.example.routingSimulator.modules.network.ip.Ipv4;
+import com.example.routingSimulator.modules.models.device.Device;
 
 import java.net.InetSocketAddress;
 import java.net.Socket;

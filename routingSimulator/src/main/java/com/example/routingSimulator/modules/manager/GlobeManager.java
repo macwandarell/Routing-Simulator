@@ -1,8 +1,8 @@
-package modules.manager;
-import modules.manager.Manager;
-import modules.network.Graph.Algo;
-import modules.network.Graph.Network;
-import modules.network.ip.Ipv4;
+package com.example.routingSimulator.modules.manager;
+import com.example.routingSimulator.modules.manager.Manager;
+import com.example.routingSimulator.modules.network.algo.Algo;
+import com.example.routingSimulator.modules.network.Network;
+import com.example.routingSimulator.modules.network.ipv4.Ipv4;
 import java.util.ArrayList;
 
 public class GlobeManager{
