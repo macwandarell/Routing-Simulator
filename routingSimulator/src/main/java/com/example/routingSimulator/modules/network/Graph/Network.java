@@ -1,4 +1,4 @@
-package modules.network.Graph;
+package com.example.routingSimulator.modules.network.Graph;
 
 import modules.models.Model;
 import modules.network.Link.Link;
