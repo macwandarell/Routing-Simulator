@@ -1,4 +1,4 @@
-package modules.manager;
+package com.example.routingSimulator.modules.manager;
 
 import modules.models.DnsServer.DNSServer;
 import modules.network.ip.Ipv4;
