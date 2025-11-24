@@ -1,6 +1,8 @@
-package com.example.routingSimulator.modules.manager;
+package com.example.routingSimulator.modules.commands;
 
-import com.example.routingSimulator.modules.network.dns.DNSServer;
+import com.example.routingSimulator.modules.manager.GlobeManager;
+import com.example.routingSimulator.modules.models.DnsServer.DNSServer;
+import com.example.routingSimulator.modules.models.Model;
 import com.example.routingSimulator.modules.network.ip.Ipv4;
 import com.example.routingSimulator.modules.models.device.Device;
 
@@ -98,7 +100,7 @@ public class NmapCommand {
         System.out.println("PORT\tSTATE\tSERVICE");
 
         // If globeManager knows about a model at this IP and it's a Device, use its active ports.
-        modules.models.Model found = globeManager.findModelByIp(ip);
+        Model found = globeManager.findModelByIp(ip);
         List<Integer> openPorts = new ArrayList<>();
 
     // commonServices is pre-populated from file (or fallback) in constructor

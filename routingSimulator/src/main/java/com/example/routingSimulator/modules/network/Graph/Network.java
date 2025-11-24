@@ -1,6 +1,6 @@
 package com.example.routingSimulator.modules.network.Graph;
 
-import modules.models.Model;
+import com.example.routingSimulator.modules.models.Model;
 import com.example.routingSimulator.modules.network.Link.Link;
 import com.example.routingSimulator.modules.network.Link.LinkSpeedType;
 

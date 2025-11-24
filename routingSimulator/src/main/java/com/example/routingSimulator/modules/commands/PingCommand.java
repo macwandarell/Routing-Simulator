@@ -1,7 +1,7 @@
 package com.example.routingSimulator.modules.commands;
 
-import modules.manager.GlobeManager;
-import modules.network.Graph.Algo;
+import com.example.routingSimulator.modules.manager.GlobeManager;
+import com.example.routingSimulator.modules.network.Graph.Algo;
 import java.util.concurrent.ThreadLocalRandom;
 
 

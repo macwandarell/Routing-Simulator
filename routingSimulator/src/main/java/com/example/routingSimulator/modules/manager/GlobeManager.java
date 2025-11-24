@@ -1,8 +1,9 @@
 package com.example.routingSimulator.modules.manager;
 import com.example.routingSimulator.modules.manager.Manager;
-import com.example.routingSimulator.modules.network.algo.Algo;
-import com.example.routingSimulator.modules.network.Network;
-import com.example.routingSimulator.modules.network.ipv4.Ipv4;
+import com.example.routingSimulator.modules.models.Model;
+import com.example.routingSimulator.modules.network.Graph.Algo;
+import com.example.routingSimulator.modules.network.Graph.Network;
+import com.example.routingSimulator.modules.network.ip.Ipv4;
 import java.util.ArrayList;
 
 public class GlobeManager{
@@ -53,9 +54,9 @@ public class GlobeManager{
     /**
      * Find a Model by IPv4 address across all managers. Returns null if none found.
      */
-    public modules.models.Model findModelByIp(String ip) {
+    public Model findModelByIp(String ip) {
         for (Manager m : managers) {
-            modules.models.Model found = m.findEntityByIp(ip);
+            Model found = m.findEntityByIp(ip);
             if (found != null) return found;
         }
         return null;

@@ -1,6 +1,6 @@
 package com.example.routingSimulator.modules.models.dhcp;
-import modules.network.ip.Ipv4;
-import modules.models.Model;
+import com.example.routingSimulator.modules.network.ip.Ipv4;
+import com.example.routingSimulator.modules.models.Model;
 import java.util.ArrayList;
 public class Dhcp extends Model{
     private String id;

@@ -1,6 +1,6 @@
 package com.example.routingSimulator.modules.commands;
 
-import modules.models.DnsServer.DNSServer;
+import com.example.routingSimulator.modules.models.DnsServer.DNSServer;
 
 public class NsLookup
 {

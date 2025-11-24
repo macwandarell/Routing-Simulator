@@ -1,6 +1,6 @@
 package com.example.routingSimulator.modules.manager;
 
-import modules.network.routing.Algo;
+import com.example.routingSimulator.modules.network.Graph.Algo;
 
 
 

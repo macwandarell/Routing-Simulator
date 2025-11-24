@@ -1,6 +1,7 @@
 package com.example.routingSimulator.modules.models.router;
-import modules.network.ip.Ipv4;
-import modules.models.Model;
+import com.example.routingSimulator.modules.network.ip.Ipv4;
+import com.example.routingSimulator.modules.models.Model;
+
 public class Router extends Model {
     private Ipv4 ipv4;
     private String id;

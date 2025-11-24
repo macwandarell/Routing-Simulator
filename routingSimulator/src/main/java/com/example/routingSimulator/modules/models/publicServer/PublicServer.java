@@ -1,6 +1,6 @@
 package com.example.routingSimulator.modules.models.publicServer;
-import modules.network.ip.Ipv4;
-import modules.models.Model;
+import com.example.routingSimulator.modules.network.ip.Ipv4;
+import com.example.routingSimulator.modules.models.Model;
 
 public class PublicServer extends Model{
     private Ipv4 ipv4;

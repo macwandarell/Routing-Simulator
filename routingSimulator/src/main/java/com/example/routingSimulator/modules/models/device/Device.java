@@ -1,7 +1,7 @@
 package com.example.routingSimulator.modules.models.device;
 
-import modules.models.Model;
-import modules.network.ip.Ipv4;
+import com.example.routingSimulator.modules.models.Model;
+import com.example.routingSimulator.modules.network.ip.Ipv4;
 
 import java.util.ArrayList;
 import java.util.Collections;
