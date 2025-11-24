@@ -1,0 +1,7 @@
+# Service name mappings: one per line in the format: <port> <service>
+# Lines starting with # are comments and ignored.
+22 ssh
+80 http
+443 https
+9929 nping-echo
+31337 Elite

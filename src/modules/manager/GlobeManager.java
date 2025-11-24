@@ -49,4 +49,15 @@ public class GlobeManager{
         }
         return false;
     }
+
+    /**
+     * Find a Model by IPv4 address across all managers. Returns null if none found.
+     */
+    public modules.models.Model findModelByIp(String ip) {
+        for (Manager m : managers) {
+            modules.models.Model found = m.findEntityByIp(ip);
+            if (found != null) return found;
+        }
+        return null;
+    }
 }

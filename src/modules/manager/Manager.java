@@ -41,4 +41,27 @@ public class Manager{
         dhcpServer.addIpToList(ipv4);
     }
     public String getPublicIp(){return this.publicIp;}
+
+    /**
+     * Find an entity (Model) managed by this Manager that has the given IPv4 string.
+     * Returns the Model if found, otherwise null.
+     */
+    public modules.models.Model findEntityByIp(String ip) {
+        for (modules.models.Model entity : entities) {
+            try {
+                if (entity instanceof modules.models.device.Device) {
+                    modules.models.device.Device d = (modules.models.device.Device) entity;
+                    if (ip.equals(d.getIpv4())) return d;
+                } else if (entity instanceof modules.models.router.Router) {
+                    modules.models.router.Router r = (modules.models.router.Router) entity;
+                    if (ip.equals(r.getIpv4())) return r;
+                } else if (entity instanceof modules.models.publicServer.PublicServer) {
+                    modules.models.publicServer.PublicServer p = (modules.models.publicServer.PublicServer) entity;
+                    if (ip.equals(p.getIpv4())) return p;
+                }
+            } catch (Exception ignored) {
+            }
+        }
+        return null;
+    }
 }
