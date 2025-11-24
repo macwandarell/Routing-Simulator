@@ -1,11 +1,10 @@
 package com.example.routingSimulator.service;
 
 import org.springframework.stereotype.Service;
-import modules.services.AnsiColor;
 
 import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 
 @Service
 public class HomeService {
@@ -13,19 +12,41 @@ public class HomeService {
     public String getWelcomeMessage() {
         StringBuilder sb = new StringBuilder();
 
-        try (BufferedReader reader = new BufferedReader(new FileReader("modules/terminal/banners/logo.txt"))) {
+        // Full-page div with background image and semi-transparent overlay
+        sb.append("<div style=\""
+                + "background-image: url('/banners/background.jpg'); "
+                + "background-size: cover; "
+                + "background-repeat: no-repeat; "
+                + "background-position: center; "
+                + "width: 100vw; "
+                + "height: 100vh; "
+                + "color: white; "
+                + "font-family: monospace; "
+                + "padding: 20px; "
+                + "box-sizing: border-box; "
+                + "background-color: rgba(0,0,0,0.5); "  // semi-transparent overlay
+                + "overflow-y: auto;"
+                + "\">");
+
+        // Load logo.txt from classpath
+        try (BufferedReader reader = new BufferedReader(
+                new InputStreamReader(getClass().getResourceAsStream("/banners/logo.txt")))) {
             String line;
             while ((line = reader.readLine()) != null) {
-                sb.append(line).append("<br>"); // HTML line break
+                sb.append(line).append("<br>");
             }
-        } catch (IOException e) {
+        } catch (IOException | NullPointerException e) {
             e.printStackTrace();
             sb.append("Error loading welcome message.<br>");
         }
 
-        sb.append("<span style='color:blue'>Here is a list of the available commands (case doesn't matter)</span><br>");
-        sb.append("<span style='color:red'>/help</span><span style='color:blue'> - prints a list of executable commands</span><br>");
-        sb.append("<span style='color:red'>/play</span><span style='color:blue'> - goes to playground page</span><br>");
+        // Commands section
+        sb.append("<br>");
+        sb.append("<span style='color:yellow;'>Here is a list of the available commands (case doesn't matter)</span><br>");
+        sb.append("<span style='color:red;'>/help</span>&nbsp;&nbsp;<span style='color:yellow;'>- prints a list of executable commands</span><br>");
+        sb.append("<span style='color:red;'>/play</span>&nbsp;&nbsp;<span style='color:yellow;'>- goes to playground page</span><br>");
+
+        sb.append("</div>");
 
         return sb.toString();
     }
