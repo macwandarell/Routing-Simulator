@@ -80,30 +80,29 @@ public class NmapCommand {
      * Scans ports in the inclusive range [startPort, endPort] on the given target.
      * Prints open ports to stdout.
      */
-    public void scan(String target, int startPort, int endPort, int timeoutMs) {
+    public String scan(String target, int startPort, int endPort, int timeoutMs) {
+        StringBuilder sb = new StringBuilder();
         if (target == null || target.trim().isEmpty()) {
-            System.out.println("Nmap Error: target is empty");
-            return;
+            sb.append("Nmap Error: target is empty\n");
+            return sb.toString();
         }
 
         if (startPort < 1 || endPort > 65535 || startPort > endPort) {
-            System.out.println("Nmap Error: invalid port range");
-            return;
+            sb.append("Nmap Error: invalid port range\n");
+            return sb.toString();
         }
 
         String ip = resolveTargetToIp(target);
         if (ip == null) {
-            System.out.println("Nmap: failed to resolve target '" + target + "'");
-            return;
+            sb.append("Nmap: failed to resolve target '").append(target).append("'\n");
+            return sb.toString();
         }
-        System.out.println("Nmap scan report for " + target + " (" + ip + ")");
-        System.out.println("PORT\tSTATE\tSERVICE");
+        sb.append("Nmap scan report for ").append(target).append(" (").append(ip).append(")\n");
+        sb.append("PORT\tSTATE\tSERVICE\n");
 
         // If globeManager knows about a model at this IP and it's a Device, use its active ports.
         Model found = globeManager.findModelByIp(ip);
         List<Integer> openPorts = new ArrayList<>();
-
-    // commonServices is pre-populated from file (or fallback) in constructor
 
         if (found != null && found instanceof Device) {
             Device dev = (Device) found;
@@ -111,7 +110,7 @@ public class NmapCommand {
                 if (p >= startPort && p <= endPort) {
                     openPorts.add(p);
                     String svc = commonServices.getOrDefault(p, "");
-                    System.out.println(p + "\topen\t" + svc);
+                    sb.append(p).append("\topen\t").append(svc).append("\n");
                 }
             }
         } else {
@@ -120,40 +119,29 @@ public class NmapCommand {
                 for (int port = startPort; port <= endPort; port++) {
                     try (Socket socket = new Socket()) {
                         socket.connect(new InetSocketAddress(ip, port), timeoutMs);
-                        System.out.println(port + "\topen\t" + commonServices.getOrDefault(port, ""));
+                        sb.append(port).append("\topen\t").append(commonServices.getOrDefault(port, "")).append("\n");
                         openPorts.add(port);
                     } catch (Exception e) {
                         // treat as filtered/closed
                     }
                 }
-            } else {
-                // simulate-only: provide a canned response for well-known demo targets
-                if (target.equalsIgnoreCase("scanme.nmap.org")) {
-                    int[] demo = new int[]{22, 80, 9929, 31337};
-                    for (int p : demo) {
-                        if (p >= startPort && p <= endPort) {
-                            openPorts.add(p);
-                            System.out.println(p + "\topen\t" + commonServices.getOrDefault(p, ""));
-                        }
-                    }
-                }
-                // otherwise no open ports in simulation
             }
+            // otherwise no open ports in simulation
         }
 
-        System.out.println();
+        sb.append("\n");
         if (openPorts.isEmpty()) {
-            System.out.println("Not shown: " + (endPort - startPort + 1) + " filtered tcp ports (no-response)");
-            System.out.println();
-            System.out.println("No open ports found in range " + startPort + "-" + endPort + ".");
+            sb.append("Not shown: ").append(endPort - startPort + 1).append(" filtered tcp ports (no-response)\n\n");
+            sb.append("No open ports found in range ").append(startPort).append("-").append(endPort).append(".\n");
         } else {
-            System.out.print("Open ports: ");
+            sb.append("Open ports: ");
             for (int i = 0; i < openPorts.size(); i++) {
-                System.out.print(openPorts.get(i));
-                if (i < openPorts.size() - 1) System.out.print(", ");
+                sb.append(openPorts.get(i));
+                if (i < openPorts.size() - 1) sb.append(", ");
             }
-            System.out.println();
+            sb.append("\n");
         }
+        return sb.toString();
     }
 
     private void loadServicesFromFile(String path) {
