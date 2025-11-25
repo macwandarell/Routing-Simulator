@@ -32,6 +32,10 @@ public class GlobeManager{
     private ArrayList<Ipv4> publicIps;
 
 
+    public Algo getDijkstra()
+    {
+        return dijkstra;
+    }
     public ArrayList<Manager> getAllManager()
     {
         return managers;

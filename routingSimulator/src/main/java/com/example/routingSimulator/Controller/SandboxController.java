@@ -40,4 +40,9 @@ public class SandboxController {
     public String getAllDevices(@PathVariable int id,@PathVariable String mid){
         return sandboxService.getAllDevices(id,mid);
     }
+
+    @GetMapping("/{id}/network")
+    public String getNetworkGraph(@PathVariable int id){
+        return sandboxService.getNetworkGraph(id);
+    }
 }
