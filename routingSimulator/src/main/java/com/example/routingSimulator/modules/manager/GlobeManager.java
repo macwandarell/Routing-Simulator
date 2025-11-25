@@ -41,7 +41,7 @@ public class GlobeManager{
         }
         return null;
     }
-    
+
     public GlobeManager(String name){
 
         grid=new Network();
