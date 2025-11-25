@@ -24,6 +24,24 @@ public class GlobeManager{
     private ArrayList<Manager> managers;
     private ArrayList<Ipv4> publicIps;
 
+
+    ArrayList<Manager> getAllManager()
+    {
+        return managers;
+    }
+
+    public ArrayList<Model> getAllDevicesofManager(String id)
+    {
+        for(Manager m:managers)
+        {
+            if(m.viewDetails().equals(id))
+            {
+                return m.getAllEntities();
+            }
+        }
+        return null;
+    }
+    
     public GlobeManager(String name){
 
         grid=new Network();
@@ -33,6 +51,8 @@ public class GlobeManager{
 
         int first = 193;
         int second = 168;
+
+
 
         for (int third = 0; third <= 255; third++) {
             for (int fourth = 0; fourth <= 255; fourth++) {
@@ -87,6 +107,7 @@ public class GlobeManager{
         }
         return false;
     }
+
 
     /**
      * Find a Model by IPv4 address across all managers. Returns null if none found.
