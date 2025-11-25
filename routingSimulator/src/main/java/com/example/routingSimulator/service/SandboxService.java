@@ -8,6 +8,12 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.example.routingSimulator.modules.manager.Manager;
 import com.example.routingSimulator.modules.models.Model;
 import com.example.routingSimulator.modules.models.router.Router;
+import com.example.routingSimulator.modules.models.device.Device;
+import com.example.routingSimulator.modules.models.dhcp.Dhcp;
+import com.example.routingSimulator.modules.models.publicServer.PublicServer;
+import com.example.routingSimulator.modules.models.DnsServer.DNSServer;
+
+
 
 
 
@@ -258,10 +264,32 @@ public class SandboxService {
                 if (manager == null) {
                     return "Manager with ID " + managerId + " not found.";
                 }
-                if(deviceType.equals("Router")){
-                Model model = new Model(deviceId);
+                Model model = null;
+
+                // change the constructor of this models
+                // laude ata nai kya
+
+
+                 if(deviceType.equals("Device")) {
+                     model = new Device(deviceId);
+                 }
+                 else if(deviceType.equals("DHCP")){
+                     model = new Dhcp(deviceId);
+                 }
+                 else if(deviceType.equals("PublicServer")){
+                     model = new PublicServer(deviceId);
+                 }
+                 else if(deviceType.equals("DNSServer")){
+                     model = new DNSServer(deviceId);
+                 }
+                 else
+                if(deviceType.equals("Router")) {
+                    model = new Model(deviceId);
+                }
                 manager.addEntity(model);
-                return "Added device " + deviceId + " to manager " + managerId;
+
+                    return "Added device " + deviceId + " to manager " + managerId;
+
             }
 
             return "Unknown command.";
