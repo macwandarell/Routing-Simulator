@@ -259,6 +259,16 @@ public class SandboxService {
             sb.append("<button type='submit' style='margin-top:10px;padding:10px;background:darkred;border:none;color:white;'>Add Link</button>");
             sb.append("</form>");
 
+            sb.append("<br><hr style='border-color:gray;'><br>");
+
+            sb.append("<h3 style='color:cyan;'>Add Port to a device</h3>");
+            sb.append("<form method='POST' action='/play/sandbox/").append(id).append("' style='display:flex;flex-direction:column;max-width:400px;'>");
+            sb.append("<textarea name='json' style='height:150px;width:100%;background:black;color:white;border:1px solid gray;padding:10px;'>");
+            sb.append("{\n  \"addPort\": {\n    \"modelID\": \"1\",\n    \"portNo\": 1\n }\n}");
+            sb.append("</textarea>");
+            sb.append("<button type='submit' style='margin-top:10px;padding:10px;background:darkred;border:none;color:white;'>Add Port</button>");
+            sb.append("</form>");
+
             sb.append(String.format(
                     "<a href='/play/sandbox/%s/command' style='color:red;text-decoration:none;'>/play/sandbox/%s/command</a>"
                             + "&nbsp;&nbsp;<span style='color:yellow;'>- goes back to this sandbox page</span><br>",
@@ -349,6 +359,17 @@ public class SandboxService {
                 grid.addEdge(edge);
 //                System.out.println("link errorrrr22");
                 return "Added link between Model id:" + fromNode + " and Model id:" + toNode;
+            }
+            else if(root.has("addPort")){
+                JsonNode cmd = root.get("addPort");
+                String modelID=cmd.get("modelID").asText();
+                int portNo=cmd.get("portNo").asInt();
+                Model model = globeManager.findModelByID(modelID);
+                if(model instanceof Device){
+                    model.addPort(portNo);
+                    return  "Added port " + portNo + " to model " + modelID;
+                }
+                return "The model id is not of a device";
             }
 
             return "Unknown command.";

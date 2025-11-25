@@ -10,7 +10,7 @@ public abstract class Model{
     public String viewDetails() {
         return "Model ID: " + this.modelID;
     }
-
+    public void addPort(int port){}
     public void setModelID(int modelID){
         this.modelID=modelID;
     }
