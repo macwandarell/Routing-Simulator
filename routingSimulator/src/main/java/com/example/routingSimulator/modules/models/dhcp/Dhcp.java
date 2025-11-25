@@ -15,6 +15,16 @@ public class Dhcp extends Model{
         }
         this.id=id;
     }
+    public Dhcp(String id){
+        super();
+        try{
+            this.ipv4=new Ipv4("67.67.67.67");
+        }
+        catch (IllegalArgumentException e){
+            System.out.println("Failed to make a dhcp server: "+e.getMessage());
+        }
+        this.id=id;
+    }
     public String getId(){
         return this.id;
     }

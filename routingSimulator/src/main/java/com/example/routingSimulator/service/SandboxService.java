@@ -67,11 +67,14 @@ public class SandboxService {
         sb.append("<h3 style='color:cyan;'>Create new Sandbox</h3>");
         sb.append("<form method='POST' action='/play/sandbox' " +
                 "style='display:flex;flex-direction:column;max-width:400px;'>");
-        sb.append("<textarea name='json' placeholder='Enter JSON here...' " +
-                "style='height:150px;width:100%;background:black;color:white;border:1px solid gray;padding:10px;'></textarea>");
+        sb.append("<textarea name='json' " +
+                "style='height:150px;width:100%;background:black;color:white;border:1px solid gray;padding:10px;'>");
+        sb.append("{\"name\":\"mySandbox\"}");
+        sb.append("</textarea>");
         sb.append("<button type='submit' " +
                 "style='margin-top:10px;padding:10px;background:darkred;border:none;color:white;'>Create Sandbox</button>");
         sb.append("</form>");
+
         sb.append("<a href='/play' style='color:red;text-decoration:none;'>/play</a>").append("&nbsp;&nbsp;<span style='color:yellow;'>- goes back to the playground page</span><br>");
 
         sb.append("</div>");
@@ -151,12 +154,12 @@ public class SandboxService {
         sb.append("<a href='/play/sandbox/").append(id).append("' style='color:red;text-decoration:none;'>/play/sandbox/").append(id).append("</a>").append("&nbsp;&nbsp;<span style='color:yellow;'>- The current page you are in</span><br>");
         sb.append("<br><hr style='border-color:gray;'><br>");
         sb.append("<h3 style='color:cyan;'>Create new manager in this Sandbox</h3>");
-        sb.append("<form method='POST' action='/play/sandbox/").append(id).append("' " +
-                "style='display:flex;flex-direction:column;max-width:400px;'>");
-        sb.append("<textarea name='json' placeholder='Enter JSON here...' " +
-                "style='height:150px;width:100%;background:black;color:white;border:1px solid gray;padding:10px;'></textarea>");
-        sb.append("<button type='submit' " +
-                "style='margin-top:10px;padding:10px;background:darkred;border:none;color:white;'>Create new manager</button>");
+        sb.append("<h3 style='color:cyan;'>Create new manager in this Sandbox</h3>");
+        sb.append("<form method='POST' action='/play/sandbox/").append(id).append("' style='display:flex;flex-direction:column;max-width:400px;'>");
+        sb.append("<textarea name='json' style='height:150px;width:100%;background:black;color:white;border:1px solid gray;padding:10px;'>");
+        sb.append("{\n  \"addManager\": {\n    \"id\": \"manager1\"\n  }\n}");
+        sb.append("</textarea>");
+        sb.append("<button type='submit' style='margin-top:10px;padding:10px;background:darkred;border:none;color:white;'>Create Manager</button>");
         sb.append("</form>");
         sb.append("<a href='/play' style='color:red;text-decoration:none;'>/play</a>").append("&nbsp;&nbsp;<span style='color:yellow;'>- goes back to the playground page</span><br>");
 
@@ -214,22 +217,22 @@ public class SandboxService {
             sb.append("<a href='/play/sandbox/").append(id).append("' style='color:red;text-decoration:none;'>/play/sandbox/").append(id).append("</a>").append("&nbsp;&nbsp;<span style='color:yellow;'>- The current page you are in</span><br>");
             sb.append("<br><hr style='border-color:gray;'><br>");
             sb.append("<h3 style='color:cyan;'>Create new manager in this Sandbox</h3>");
-            sb.append("<form method='POST' action='/play/sandbox/").append(id).append("' " +
-                    "style='display:flex;flex-direction:column;max-width:400px;'>");
-            sb.append("<textarea name='json' placeholder='Enter JSON here...' " +
-                    "style='height:150px;width:100%;background:black;color:white;border:1px solid gray;padding:10px;'></textarea>");
-            sb.append("<button type='submit' " +
-                    "style='margin-top:10px;padding:10px;background:darkred;border:none;color:white;'>Create new manager</button>");
+            sb.append("<form method='POST' action='/play/sandbox/").append(id).append("' style='display:flex;flex-direction:column;max-width:400px;'>");
+            sb.append("<textarea name='json' style='height:150px;width:100%;background:black;color:white;border:1px solid gray;padding:10px;'>");
+            sb.append("{\n  \"addManager\": {\n    \"id\": \"manager1\"\n  }\n}");
+            sb.append("</textarea>");
+            sb.append("<button type='submit' style='margin-top:10px;padding:10px;background:darkred;border:none;color:white;'>Create Manager</button>");
             sb.append("</form>");
-            sb.append("<br><hr style='border-color:gray;'><br>");
+
             sb.append("<h3 style='color:cyan;'>Add new device in a particular manager in this Sandbox</h3>");
-            sb.append("<form method='POST' action='/play/sandbox/").append(id).append("' " +
-                    "style='display:flex;flex-direction:column;max-width:400px;'>");
-            sb.append("<textarea name='json' placeholder='Enter JSON here...' " +
-                    "style='height:150px;width:100%;background:black;color:white;border:1px solid gray;padding:10px;'></textarea>");
-            sb.append("<button type='submit' " +
-                    "style='margin-top:10px;padding:10px;background:darkred;border:none;color:white;'>Add new device</button>");
+            sb.append("<form method='POST' action='/play/sandbox/").append(id).append("' style='display:flex;flex-direction:column;max-width:400px;'>");
+            sb.append("<textarea name='json' style='height:150px;width:100%;background:black;color:white;border:1px solid gray;padding:10px;'>");
+            sb.append("{\n  \"addDevice\": {\n    \"managerId\": \"manager1\",\n    \"id\": \"device1\"\n  }\n}");
+            sb.append("</textarea>");
+            sb.append("<button type='submit' style='margin-top:10px;padding:10px;background:darkred;border:none;color:white;'>Add Device</button>");
             sb.append("</form>");
+
+
             sb.append("<a href='/play' style='color:red;text-decoration:none;'>/play</a>").append("&nbsp;&nbsp;<span style='color:yellow;'>- goes back to the playground page</span><br>");
             sb.append("<p style='color:yellow;'>Last action: " + responseMessage + "</p><br>");
 
@@ -268,8 +271,6 @@ public class SandboxService {
 
                 // change the constructor of this models
                 // laude ata nai kya
-
-
                  if(deviceType.equals("Device")) {
                      model = new Device(deviceId);
                  }
@@ -284,7 +285,7 @@ public class SandboxService {
                  }
                  else
                 if(deviceType.equals("Router")) {
-                    model = new Model(deviceId);
+                    model = new Router(deviceId);
                 }
                 manager.addEntity(model);
 
