@@ -6,6 +6,8 @@ import com.example.routingSimulator.modules.manager.GlobeManager;
 import com.example.routingSimulator.service.SandboxRegistry;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.example.routingSimulator.modules.manager.Manager;
+import com.example.routingSimulator.modules.models.Model;
+import com.example.routingSimulator.modules.models.router.Router;
 
 
 
@@ -213,6 +215,15 @@ public class SandboxService {
             sb.append("<button type='submit' " +
                     "style='margin-top:10px;padding:10px;background:darkred;border:none;color:white;'>Create new manager</button>");
             sb.append("</form>");
+            sb.append("<br><hr style='border-color:gray;'><br>");
+            sb.append("<h3 style='color:cyan;'>Add new device in a particular manager in this Sandbox</h3>");
+            sb.append("<form method='POST' action='/play/sandbox/").append(id).append("' " +
+                    "style='display:flex;flex-direction:column;max-width:400px;'>");
+            sb.append("<textarea name='json' placeholder='Enter JSON here...' " +
+                    "style='height:150px;width:100%;background:black;color:white;border:1px solid gray;padding:10px;'></textarea>");
+            sb.append("<button type='submit' " +
+                    "style='margin-top:10px;padding:10px;background:darkred;border:none;color:white;'>Add new device</button>");
+            sb.append("</form>");
             sb.append("<a href='/play' style='color:red;text-decoration:none;'>/play</a>").append("&nbsp;&nbsp;<span style='color:yellow;'>- goes back to the playground page</span><br>");
             sb.append("<p style='color:yellow;'>Last action: " + responseMessage + "</p><br>");
 
@@ -236,6 +247,21 @@ public class SandboxService {
                 Manager manager = new Manager(id);
                 globeManager.addManager(manager);
                 return "Added manager " + id;
+            }
+            else if (root.has("addDevice")) {
+                JsonNode cmd = root.get("addDevice");
+
+                String managerId = cmd.get("managerId").asText();
+                String deviceId = cmd.get("deviceId").asText();
+                String deviceType= cmd.get("deviceType").asText();
+                Manager manager = globeManager.findManagerById(managerId);
+                if (manager == null) {
+                    return "Manager with ID " + managerId + " not found.";
+                }
+                if(deviceType.equals("Router")){
+                Model model = new Model(deviceId);
+                manager.addEntity(model);
+                return "Added device " + deviceId + " to manager " + managerId;
             }
 
             return "Unknown command.";

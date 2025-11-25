@@ -85,7 +85,14 @@ public class GlobeManager{
         }
         return null;
     }
-
+    public Manager findManagerById(String id){
+        for(Manager m: managers){
+            if(m.viewDetails()==id){
+                return m;
+            }
+        }
+        return null;
+    }
     public String printView()
     {
         MutableGraph g=mutGraph("network").setDirected(false);
