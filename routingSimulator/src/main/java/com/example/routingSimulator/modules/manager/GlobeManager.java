@@ -7,6 +7,11 @@ import com.example.routingSimulator.modules.network.Link.Link;
 import com.example.routingSimulator.modules.network.ip.Ipv4;
 import com.example.routingSimulator.modules.network.ip.PrivateIpv4Generator;
 import com.example.routingSimulator.modules.models.DnsServer.DNSServer;
+import guru.nidi.graphviz.attribute.Color;
+import guru.nidi.graphviz.attribute.Shape;
+import guru.nidi.graphviz.attribute.Label;
+import guru.nidi.graphviz.model.Node;
+import guru.nidi.graphviz.model.MutableNode;
 import guru.nidi.graphviz.engine.Format;
 import guru.nidi.graphviz.engine.Graphviz;
 import guru.nidi.graphviz.model.MutableGraph;
@@ -143,34 +148,73 @@ public class GlobeManager{
         }
         return null;
     }
-    public String printView()
-    {
-        MutableGraph g=mutGraph("network").setDirected(false);
+    private MutableNode createNodeForModel(Model model) {
+        String id = String.valueOf(model.getModelID());
+        String type = model.getClass().getSimpleName();
 
-        for(Manager manager:managers)
-        {
-            ArrayList<Model> entities=manager.getAllEntities();
-            for(Model model:entities)
-            {
-                if(model!=null){
-                String modelid=Integer.toString(model.getModelID());
-                g.add(mutNode(modelid));}
+        Shape shape;
+        Color color;
+
+        switch (type) {
+            case "Router":
+                shape = Shape.BOX;
+                color = Color.BLUE;
+                break;
+
+            case "Dhcp":
+                shape = Shape.ELLIPSE;
+                color = Color.ORANGE;
+                break;
+
+            case "Device":
+                shape = Shape.CIRCLE;
+                color = Color.GREEN;
+                break;
+
+            case "PublicServer":
+                shape = Shape.DIAMOND;
+                color = Color.RED;
+                break;
+
+            default:
+                shape = Shape.OVAL;
+                color = Color.GRAY;
+        }
+
+        return mutNode(id)
+                .add(Label.of(type + "\nID: " + id))
+                .add(shape)
+                .add(color);
+    }
+    public String printView() {
+        MutableGraph g = mutGraph("network").setDirected(false);
+
+        // Add all entity nodes (pretty version)
+        for (Manager manager : managers) {
+            ArrayList<Model> entities = manager.getAllEntities();
+            for (Model model : entities) {
+                if (model != null) {
+                    g.add(createNodeForModel(model));
+                }
             }
         }
 
-        ArrayList<ArrayList<Link>> adjList=grid.getAdjList();
-        for(ArrayList<Link> a:adjList)
-        {
-            for(Link e:a)
-            {
-                String node1=Integer.toString(e.getFirst().getModelID());
-                String node2=Integer.toString(e.getSecond().getModelID());
-                g.add(mutNode(node1).addLink(mutNode(node2)));
+        // Add edges (connections in the adjacency list)
+        ArrayList<ArrayList<Link>> adjList = grid.getAdjList();
+        for (ArrayList<Link> a : adjList) {
+            for (Link e : a) {
+                Model first = e.getFirst();
+                Model second = e.getSecond();
 
+                if (first != null && second != null) {
+                    String id1 = String.valueOf(first.getModelID());
+                    String id2 = String.valueOf(second.getModelID());
+
+                    g.add(mutNode(id1).addLink(mutNode(id2)));
+                }
             }
         }
 
         return Graphviz.fromGraph(g).render(Format.SVG).toString();
-        
     }
 }
