@@ -88,11 +88,11 @@ public class CommandService {
         sb.append("<br><hr style='border-color:gray;'><br>");
 
         sb.append("<h3 style='color:cyan;'>Ping</h3>");
-        sb.append("<form method='POST' action='/play/sandbox/").append(id).append("' style='display:flex;flex-direction:column;max-width:400px;'>");
+        sb.append("<form method='POST' action='/play/sandbox/").append(id).append("command").append("' style='display:flex;flex-direction:column;max-width:400px;'>");
         sb.append("<textarea name='json' style='height:150px;width:100%;background:black;color:white;border:1px solid gray;padding:10px;'>");
         sb.append("{\n" +
                 "  \"Ping\": {\n" +
-                "    \"sourceIp\": \"10.0.0.2\",\n" +
+                "    \"modelID\": \"1\",\n" +
                 "    \"destIp\": \"193.168.0.45\",\n" +
                 "    \"count\": 4\n" +
                 "  }\n" +
@@ -314,11 +314,11 @@ public class CommandService {
             else if (root.has("Ping")) {
                 JsonNode cmd = root.get("Ping");
 
-                String sourceIp = cmd.get("sourceIp").asText();
+                String modelID = cmd.get("modelID").asInt();
                 String destIp = cmd.get("destIp").asText();
                 int count = cmd.has("count") ? cmd.get("count").asInt() : 4;
 
-                Model srcModel = globeManager.findModelByIp(sourceIp);
+                Model srcModel = globeManager.findModelByID(modelID);
                 if (srcModel == null) {
                     return "Source IP " + sourceIp + " not found in this sandbox.";
                 }

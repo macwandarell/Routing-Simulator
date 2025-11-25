@@ -127,6 +127,13 @@ public class GlobeManager{
         }
         return null;
     }
+    public Model findModelByID(String Id){
+        for(Manager m : managers){
+            Model model = m.findModelById(Id);
+            if(model != null) return model;
+        }
+        return null;
+    }
     public String printView()
     {
         MutableGraph g=mutGraph("network").setDirected(false);
