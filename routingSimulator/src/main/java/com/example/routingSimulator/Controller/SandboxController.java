@@ -28,4 +28,8 @@ public class SandboxController {
     public String openSandbox(@PathVariable int id) {
         return sandboxService.openSandbox(id);
     }
+    @PostMapping("/{id}")
+    public String updateSandbox(@PathVariable int id, @RequestParam("json") String json) {
+        return sandboxService.updateSandbox(id, json);
+    }
 }

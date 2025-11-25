@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.example.routingSimulator.modules.manager.GlobeManager;
 import com.example.routingSimulator.service.SandboxRegistry;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.example.routingSimulator.modules.manager.Manager;
 
 
 
@@ -108,8 +109,120 @@ public class SandboxService {
         }
     }
     public String openSandbox(int id){
+        StringBuilder sb = new StringBuilder();
+        sb.append("<div style=\""
+                + "background-image: url('/banners/background.jpg'); "
+                + "background-size: cover; "
+                + "background-repeat: no-repeat; "
+                + "background-position: center; "
+                + "width: 100vw; "
+                + "height: 100vh; "
+                + "color: white; "
+                + "font-family: monospace; "
+                + "padding: 20px; "
+                + "box-sizing: border-box; "
+                + "background-color: rgba(0,0,0,0.5); "
+                + "overflow-y: auto;"
+                + "\">");
+
+        // Load logo.txt from classpath
+        try (BufferedReader reader = new BufferedReader(
+                new InputStreamReader(getClass().getResourceAsStream("/banners/sandbox.txt")))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                sb.append(line).append("<br>");
+            }
+        } catch (IOException | NullPointerException e) {
+            e.printStackTrace();
+            sb.append("Error loading welcome message.<br>");
+        }
+
+        // Commands section
+        sb.append("<br>");
+        sb.append("<span style='color:yellow;'>Here is a list of the available commands (case doesn't matter)</span><br>");
+        sb.append("<a href='/play/sandbox/").append(id).append("' style='color:red;text-decoration:none;'>/play/sandbox/").append(id).append("</a>").append("&nbsp;&nbsp;<span style='color:yellow;'>- The current page you are in</span><br>");
+        sb.append("<br><hr style='border-color:gray;'><br>");
+        sb.append("<h3 style='color:cyan;'>Create new manager in this Sandbox</h3>");
+        sb.append("<form method='POST' action='/play/sandbox/").append(id).append("' " +
+                "style='display:flex;flex-direction:column;max-width:400px;'>");
+        sb.append("<textarea name='json' placeholder='Enter JSON here...' " +
+                "style='height:150px;width:100%;background:black;color:white;border:1px solid gray;padding:10px;'></textarea>");
+        sb.append("<button type='submit' " +
+                "style='margin-top:10px;padding:10px;background:darkred;border:none;color:white;'>Create new manager</button>");
+        sb.append("</form>");
+        sb.append("<a href='/play' style='color:red;text-decoration:none;'>/play</a>").append("&nbsp;&nbsp;<span style='color:yellow;'>- goes back to the playground page</span><br>");
+
+        sb.append("</div>");
+
         GlobeManager globemanager= sandboxRegistry.get(id);
-        return globemanager.getName();
+        sb.append(globemanager.printView());
+        return sb.toString();
     }
+    public String updateSandbox(int id, String json) {
+        try {
+            JsonNode root = objectMapper.readTree(json);
+            GlobeManager globeManager = sandboxRegistry.get(id);
+
+            if (globeManager == null) {
+                return "Sandbox with ID " + id + " not found.";
+            }
+            String responseMessage = handleCommands(globeManager, root);
+            StringBuilder sb = new StringBuilder();
+
+            sb.append("<div style=\""
+                    + "background-image: url('/banners/background.jpg'); "
+                    + "background-size: cover; "
+                    + "background-repeat: no-repeat; "
+                    + "background-position: center; "
+                    + "width: 100vw; "
+                    + "height: 100vh; "
+                    + "color: white; "
+                    + "font-family: monospace; "
+                    + "padding: 20px; "
+                    + "box-sizing: border-box; "
+                    + "background-color: rgba(0,0,0,0.5); "
+                    + "overflow-y: auto;"
+                    + "\">");
+            sb.append("<h2 style='color:cyan;'>Sandbox #" + id + "</h2>");
+            sb.append("<p style='color:yellow;'>Last action: " + responseMessage + "</p><br>");
+            sb.append("<form method='POST' action='/play/sandbox/" + id + "' "
+                    + "style='display:flex;flex-direction:column;max-width:400px;'>");
+            sb.append("<textarea name='json' placeholder='Enter command JSON here...' "
+                    + "style='height:150px;width:100%;background:black;color:white;"
+                    + "border:1px solid gray;padding:10px;'></textarea>");
+            sb.append("<button type='submit' "
+                    + "style='margin-top:10px;padding:10px;background:darkred;border:none;color:white;'>Apply Update</button>");
+            sb.append("</form>");
+            sb.append("<br><a href='/play' style='color:red;text-decoration:none;'>Back to Playground</a>");
+            sb.append("<br><hr style='border-color:gray;'><br>");
+            sb.append("<div>");
+            sb.append(globeManager.printView());
+            sb.append("</div>");
+            sb.append("</div>");
+            return sb.toString();
+
+        } catch (Exception e) {
+            return "Invalid JSON: " + e.getMessage();
+        }
+    }
+
+    private String handleCommands(GlobeManager globeManager, JsonNode root) {
+        try {
+            if (root.has("addManager")) {
+                JsonNode cmd = root.get("addManager");
+
+                String id = cmd.get("id").asText();
+                Manager manager = new Manager(id);
+                globeManager.addManager(manager);
+                return "Added manager " + id;
+            }
+
+            return "Unknown command.";
+
+        } catch (Exception e) {
+            return "Error: " + e.getMessage();
+        }
+    }
+
 
 }
