@@ -17,6 +17,10 @@ public class Manager{
     public Manager(String managerID){
         this.managerID=managerID;
     }
+    public ArrayList<Model> getAllEntities()
+    {
+        return entities;
+    }
     public void addEntity(Model entity){
         if(entity.getType().equals("DHCP")){
             dhcpServer = (Dhcp)entity;
@@ -27,6 +31,9 @@ public class Manager{
             publicServer.setIpv4(publicIp);
             return;
         }
+
+
+
         String ipv4= dhcpServer.assignIp();
         if(ipv4==null){
             System.out.println("Failed to assign any ip.");

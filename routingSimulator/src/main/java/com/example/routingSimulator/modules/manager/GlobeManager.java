@@ -3,6 +3,7 @@ import com.example.routingSimulator.modules.manager.Manager;
 import com.example.routingSimulator.modules.models.Model;
 import com.example.routingSimulator.modules.network.Graph.Algo;
 import com.example.routingSimulator.modules.network.Graph.Network;
+import com.example.routingSimulator.modules.network.Link.Link;
 import com.example.routingSimulator.modules.network.ip.Ipv4;
 import guru.nidi.graphviz.engine.Format;
 import guru.nidi.graphviz.engine.Graphviz;
@@ -11,6 +12,12 @@ import static guru.nidi.graphviz.model.Factory.*;
 import java.util.ArrayList;
 
 public class GlobeManager{
+    
+    
+    public Network grid=new Network();
+    public Algo dijkstra=new Algo(grid);
+    
+    
     private String name;
     private ArrayList<Manager> managers = new ArrayList<Manager>();
     private ArrayList<Ipv4> publicIps=new ArrayList<Ipv4>();
@@ -27,8 +34,6 @@ public class GlobeManager{
         }
         this.name = name;
     }
-    public Network grid=new Network();
-    public Algo dijkstra=new Algo(grid);
     public void addManager(Manager manager){
         manager.setPublicIp(assignIp());
         managers.add(manager);
@@ -74,17 +79,33 @@ public class GlobeManager{
         return null;
     }
 
-    public String printView(){
-        MutableGraph g = mutGraph("network").setDirected(false);
+    public String printView()
+    {
+        MutableGraph g=mutGraph("network").setDirected(false);
 
-        for (Manager m : managers) {
-            g.add(mutNode(m.getId()));
+        for(Manager manager:managers)
+        {
+            ArrayList<Model> entities=manager.getAllEntities();
+            for(Model model:entities)
+            {
+                String modelid=Integer.toString(model.getModelID());
+                g.add(mutNode(modelid));
+            }
         }
-        for (Link link : grid.getLinks()) {
-            String a = link.getNodeA().getId();
-            String b = link.getNodeB().getId();
-            g.add(mutNode(a).addLink(mutNode(b)));
+
+        ArrayList<ArrayList<Link>> adjList=grid.getAdjList();
+        for(ArrayList<Link> a:adjList)
+        {
+            for(Link e:a)
+            {
+                String node1=Integer.toString(e.getFirst().getModelID());
+                String node2=Integer.toString(e.getSecond().getModelID());
+                g.add(mutNode(node1).addLink(mutNode(node2)));
+
+            }
         }
+
         return Graphviz.fromGraph(g).render(Format.SVG).toString();
+        
     }
 }
