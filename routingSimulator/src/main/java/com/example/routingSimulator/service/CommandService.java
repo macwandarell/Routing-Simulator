@@ -196,7 +196,7 @@ public class CommandService {
             sb.append("<a href='/play/sandbox/").append(id).append("' style='color:red;text-decoration:none;'>/play/sandbox/").append(id).append("</a>").append("&nbsp;&nbsp;<span style='color:yellow;'>- The current page you are in</span><br>");
             sb.append("<br><hr style='border-color:gray;'><br>");
             sb.append("<h3 style='color:cyan;'>NSLookup Command</h3>");
-            sb.append("<form method='POST' action='/play/sandbox/").append(id).append("' style='display:flex;flex-direction:column;max-width:400px;'>");
+            sb.append("<form method='POST' action='/play/sandbox/").append(id).append("/command").append("' style='display:flex;flex-direction:column;max-width:400px;'>");
             sb.append("<textarea name='json' style='height:150px;width:100%;background:black;color:white;border:1px solid gray;padding:10px;'>");
             sb.append("{\n  \"addManager\": {\n    \"id\": \"manager1\"\n  }\n}");
             sb.append("</textarea>");
@@ -217,7 +217,7 @@ public class CommandService {
             sb.append("<br><hr style='border-color:gray;'><br>");
 
             sb.append("<h3 style='color:cyan;'>Ping</h3>");
-            sb.append("<form method='POST' action='/play/sandbox/").append(id).append("' style='display:flex;flex-direction:column;max-width:400px;'>");
+            sb.append("<form method='POST' action='/play/sandbox/").append(id).append("/command").append("' style='display:flex;flex-direction:column;max-width:400px;'>");
             sb.append("<textarea name='json' style='height:150px;width:100%;background:black;color:white;border:1px solid gray;padding:10px;'>");
             sb.append("{\n" +
                     "  \"Ping\": {\n" +
