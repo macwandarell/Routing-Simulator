@@ -162,111 +162,12 @@ public class CommandService {
             String responseMessage = handleCommands(globeManager, root);
 
 
-            StringBuilder sb = new StringBuilder();
-            sb.append("<div style=\""
-                    + "background-image: url('/banners/background.jpg'); "
-                    + "background-size: cover; "
-                    + "background-repeat: no-repeat; "
-                    + "background-position: center; "
-                    + "width: 100vw; "
-                    + "height: 100vh; "
-                    + "color: white; "
-                    + "font-family: monospace; "
-                    + "padding: 20px; "
-                    + "box-sizing: border-box; "
-                    + "background-color: rgba(0,0,0,0.5); "
-                    + "overflow-y: auto;"
-                    + "\">");
-
-            // Load logo.txt from classpath
-            try (BufferedReader reader = new BufferedReader(
-                    new InputStreamReader(getClass().getResourceAsStream("/banners/sandbox.txt")))) {
-                String line;
-                while ((line = reader.readLine()) != null) {
-                    sb.append(line).append("<br>");
-                }
-            } catch (IOException | NullPointerException e) {
-                e.printStackTrace();
-                sb.append("Error loading welcome message.<br>");
-            }
-
-            // Commands section
-            sb.append("<br>");
-            sb.append("<span style='color:yellow;'>Here is a list of the available commands (case doesn't matter)</span><br>");
-            sb.append("<a href='/play/sandbox/").append(id).append("' style='color:red;text-decoration:none;'>/play/sandbox/").append(id).append("</a>").append("&nbsp;&nbsp;<span style='color:yellow;'>- The current page you are in</span><br>");
-            sb.append("<br><hr style='border-color:gray;'><br>");
-            sb.append("<h3 style='color:cyan;'>NSLookup Command</h3>");
-            sb.append("<form method='POST' action='/play/sandbox/").append(id).append("/command").append("' style='display:flex;flex-direction:column;max-width:400px;'>");
-            sb.append("<textarea name='json' style='height:150px;width:100%;background:black;color:white;border:1px solid gray;padding:10px;'>");
-            sb.append("{\n  \"addManager\": {\n    \"id\": \"manager1\"\n  }\n}");
-            sb.append("</textarea>");
-            sb.append("<button type='submit' style='margin-top:10px;padding:10px;background:darkred;border:none;color:white;'>NSLookup</button>");
-            sb.append("</form>");
-
-
-            sb.append("<br><hr style='border-color:gray;'><br>");
-
-            sb.append("<h3 style='color:cyan;'>NMAP</h3>");
-            sb.append("<form method='POST' action='/play/sandbox/").append(id).append("/command").append("' style='display:flex;flex-direction:column;max-width:400px;'>");
-            sb.append("<textarea name='json' style='height:150px;width:100%;background:black;color:white;border:1px solid gray;padding:10px;'>");
-            sb.append("{\n" + "  \"nmap\": {\n" +  "    \"target\": \"scanme.nmap.org\",\n" + "    \"startPort\": 1,\n" + "    \"endPort\": 1024,\n" + "    \"timeoutMs\": 200\n" + "  }\n" + "}");
-            sb.append("</textarea>");
-            sb.append("<button type='submit' style='margin-top:10px;padding:10px;background:darkred;border:none;color:white;'>NMAP</button>");
-            sb.append("</form>");
-
-            sb.append("<br><hr style='border-color:gray;'><br>");
-
-            sb.append("<h3 style='color:cyan;'>Ping</h3>");
-            sb.append("<form method='POST' action='/play/sandbox/").append(id).append("/command").append("' style='display:flex;flex-direction:column;max-width:400px;'>");
-            sb.append("<textarea name='json' style='height:150px;width:100%;background:black;color:white;border:1px solid gray;padding:10px;'>");
-            sb.append("{\n" +
-                    "  \"Ping\": {\n" +
-                    "    \"sourceIp\": \"10.0.0.2\",\n" +
-                    "    \"destIp\": \"193.168.0.45\",\n" +
-                    "    \"count\": 4\n" +
-                    "  }\n" +
-                    "}");
-
-            sb.append("</textarea>");
-            sb.append("<button type='submit' style='margin-top:10px;padding:10px;background:darkred;border:none;color:white;'>PING</button>");
-            sb.append("</form>");
-            sb.append("<div id='pingOutput' "
-                    + "style='margin-top:15px;padding:10px;background-color:black;color:lime;"
-                    + "border:1px solid gray;width:100%;max-width:400px;min-height:50px;"
-                    + "font-family:monospace;white-space:pre-wrap;'>"
-                    + "Output will appear here..."
-                    + "</div>");
-            sb.append("<script>"
-                    + "document.querySelector(\"form[action='/play/sandbox/" + id + "'] button[type='submit']\").addEventListener('click', function(e) {"
-                    + "e.preventDefault();"
-                    + "var form = this.closest('form');"
-                    + "var data = new FormData(form);"
-                    + "fetch(form.action, { method: 'POST', body: data })"
-                    + ".then(r => r.text())"
-                    + ".then(html => {"
-                    + "document.getElementById('pingOutput').innerText = html;"
-                    + "})"
-                    + ".catch(err => {"
-                    + "document.getElementById('pingOutput').innerText = 'Error: ' + err;"
-                    + "});"
-                    + "});"
-                    + "</script>");
-
-
-
-            sb.append(String.format(
-                    "<a href='/play/sandbox/%s/command' style='color:red;text-decoration:none;'>/play/sandbox/%s/command</a>"
-                            + "&nbsp;&nbsp;<span style='color:yellow;'>- goes back to this sandbox page</span><br>",
-                    id, id));
-
-            sb.append("<a href='/play' style='color:red;text-decoration:none;'>/play</a>").append("&nbsp;&nbsp;<span style='color:yellow;'>- goes back to the playground page</span><br>");
-            sb.append("<p style='color:yellow;'>Last action: " + responseMessage + "</p><br>");
-
-            sb.append("</div>");
-            sb.append(globeManager.printView());
-
-
-            return sb.toString();
+            // START OF MODIFICATION: Prepend the Result to the existing HTML structure
+            // This reuses the getWelcomeMessage method but inserts the result
+            String baseHtml = getWelcomeMessage(id);
+            String resultHtml = "<div style='border: 1px solid lime; padding: 10px; background: rgba(0,0,0,0.8); color:lime; font-family:monospace; margin: 20px;'><strong>RESULT:</strong><br>" + responseMessage + "</div>";
+            return baseHtml.replaceFirst("\">", "\">" + resultHtml);
+            // END OF MODIFICATION
 
         } catch (Exception e) {
             return "Invalid JSON: " + e.getMessage();
