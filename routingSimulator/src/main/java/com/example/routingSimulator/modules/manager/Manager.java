@@ -19,7 +19,11 @@ public class Manager{
     }
     public ArrayList<Model> getAllEntities()
     {
-        return entities;
+        ArrayList<Model> allEntities = new ArrayList<>(entities);
+        if (publicServer != null) {
+            allEntities.add(publicServer);
+        }
+        return allEntities;
     }
     public void addEntity(Model entity){
         if(entity.getType().equals("DHCP")){
@@ -43,6 +47,7 @@ public class Manager{
         entities.add(entity);
         System.out.println("Successfully added: "+ entity.viewDetails());
     }
+    public String getPublicServerId(){if(publicServer!=null){return publicServer.getId();} return null;}
     public void setPublicIp(String ipv4){this.publicIp=ipv4;}
     public String viewDetails(){
        return this.managerID;

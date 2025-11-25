@@ -25,7 +25,7 @@ public class GlobeManager{
     private ArrayList<Ipv4> publicIps;
 
 
-    ArrayList<Manager> getAllManager()
+    public ArrayList<Manager> getAllManager()
     {
         return managers;
     }
@@ -136,8 +136,9 @@ public class GlobeManager{
             ArrayList<Model> entities=manager.getAllEntities();
             for(Model model:entities)
             {
+                if(model!=null){
                 String modelid=Integer.toString(model.getModelID());
-                g.add(mutNode(modelid));
+                g.add(mutNode(modelid));}
             }
         }
 

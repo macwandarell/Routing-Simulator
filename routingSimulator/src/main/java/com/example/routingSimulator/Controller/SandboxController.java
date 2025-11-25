@@ -32,4 +32,12 @@ public class SandboxController {
     public String updateSandbox(@PathVariable int id, @RequestParam("json") String json) {
         return sandboxService.updateSandbox(id, json);
     }
+    @GetMapping("/{id}/managers")
+    public String getAllManagers(@PathVariable int id){
+        return sandboxService.getAllManagers(id);
+    }
+    @GetMapping("/{id}/{mid}/devices")
+    public String getAllDevices(@PathVariable int id,@PathVariable String mid){
+        return sandboxService.getAllDevices(id,mid);
+    }
 }
