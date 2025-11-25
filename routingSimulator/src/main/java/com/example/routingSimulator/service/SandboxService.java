@@ -1,7 +1,9 @@
 package com.example.routingSimulator.service;
 
+import com.example.routingSimulator.modules.network.Graph.Algo;
 import com.example.routingSimulator.modules.network.Graph.Network;
 import com.example.routingSimulator.modules.network.Link.Link;
+import com.example.routingSimulator.modules.network.Link.LinkSpeedType;
 import org.springframework.stereotype.Service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.example.routingSimulator.modules.manager.GlobeManager;
@@ -23,6 +25,7 @@ import java.util.ArrayList;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.List;
 
 @Service
 public class SandboxService {
@@ -250,7 +253,6 @@ public class SandboxService {
 
 
             sb.append("<br><hr style='border-color:gray;'><br>");
-
             sb.append("<h3 style='color:cyan;'>Add new link between 2 devices</h3>");
             sb.append("<form method='POST' action='/play/sandbox/").append(id).append("' style='display:flex;flex-direction:column;max-width:400px;'>");
             sb.append("<textarea name='json' style='height:150px;width:100%;background:black;color:white;border:1px solid gray;padding:10px;'>");
@@ -268,6 +270,18 @@ public class SandboxService {
             sb.append("</textarea>");
             sb.append("<button type='submit' style='margin-top:10px;padding:10px;background:darkred;border:none;color:white;'>Add Port</button>");
             sb.append("</form>");
+
+            sb.append("<br><hr style='border-color:gray;'><br>");
+            sb.append("<h3 style='color:cyan;'>Get Shorted Path between 2 devices</h3>");
+            sb.append("<form method='POST' action='/play/sandbox/").append(id).append("' style='display:flex;flex-direction:column;max-width:400px;'>");
+            sb.append("<textarea name='json' style='height:150px;width:100%;background:black;color:white;border:1px solid gray;padding:10px;'>");
+            sb.append("{\n  \"getshortestpath\": {\n    \"fromNode\": \"Model 1's id\",\n    \"toNode\": \"Model 2's id\"\n }\n}");
+            sb.append("</textarea>");
+            sb.append("<button type='submit' style='margin-top:10px;padding:10px;background:darkred;border:none;color:white;'>Get Path</button>");
+            sb.append("</form>");
+
+
+
 
             sb.append(String.format(
                     "<a href='/play/sandbox/%s/command' style='color:red;text-decoration:none;'>/play/sandbox/%s/command</a>"
@@ -371,6 +385,25 @@ public class SandboxService {
                 }
                 return "The model id is not of a device";
             }
+            else if(root.has("getshortestpath")){
+                JsonNode cmd = root.get("getshortestpath");
+                String fromNode = (cmd.get("fromNode").asText());
+                String toNode = (cmd.get("toNode").asText());
+                Algo algo= globeManager.getDijkstra();
+                List<double[]> pathLinks= algo.findShortestPath(globeManager.findModelByID(fromNode),globeManager.findModelByID(toNode));
+                if(pathLinks==null){
+                    return "No path found between Model id:" + fromNode + " and Model id:" + toNode;
+                }
+                StringBuilder pathStr = new StringBuilder();
+                pathStr.append("Shortest path from Model id: ").append(fromNode).append(" to Model id: ").append(toNode).append(" is:<br>");
+                pathStr.append("Start at Model id: ").append(fromNode).append("<br>");
+                for (double[] linkInfo : pathLinks) {
+                    int modelId = (int) linkInfo[0];
+                    double bandwidth = linkInfo[1];
+                    pathStr.append(" --[").append(bandwidth).append(" Kbps]--> Model id: ").append(modelId).append("<br>");
+                }
+                return pathStr.toString();
+            }
 
             return "Unknown command.";
 
@@ -404,6 +437,25 @@ public class SandboxService {
         for(Model m: deviceArrayList){
             if(m!=null){
             sb.append(m.getModelID()).append(" - ").append(m.getId()).append(" - ").append(m.getType()).append("<br>");}
+        }
+        return sb.toString();
+    }
+
+    public String getNetworkGraph(int id){
+        StringBuilder sb= new StringBuilder();
+        GlobeManager globeManager = sandboxRegistry.get(id);
+        if (globeManager == null) {
+            return "Sandbox with ID " + id + " not found.";
+        }
+        Network network = globeManager.getNetwork();
+        ArrayList<ArrayList<Link>> adjList = network.getAdjList();
+        for(int i=0;i<adjList.size();i++){
+            sb.append("Model ID ").append(i).append(" connections:<br>");
+            for(Link link: adjList.get(i)){
+                sb.append("  -> Model ID ").append(link.getSecond().getModelID())
+                  .append(" (Bandwidth: ").append(link.getSpeed(LinkSpeedType.KBPS)).append(" Kbps)<br>");
+            }
+            sb.append("<br>");
         }
         return sb.toString();
     }
