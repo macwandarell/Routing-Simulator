@@ -9,8 +9,17 @@ public class DNSServer extends Model
 {
     HashMap<String,String> dnsRecords; // Maps domain names to IP addresses
     Ipv4 ipv4;
+    private String id;
 
     // Constructor
+    public DNSServer(String ipv4,String id)
+    {
+        super();
+        this.ipv4 = new Ipv4(ipv4);
+        dnsRecords=new HashMap<String,String>();
+        loadRecords();
+        this.id=id;
+    }
     public DNSServer(String ipv4)
     {
         super();
@@ -59,7 +68,7 @@ public class DNSServer extends Model
             System.out.println("Error loading DNS records: " + e.getMessage());
         }
     }
-
+    public String getId(){return this.id;}
     private void saveRecords()
     {
         String filePath = "dns_records.txt";

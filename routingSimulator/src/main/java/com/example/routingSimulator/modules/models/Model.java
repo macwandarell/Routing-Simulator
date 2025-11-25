@@ -1,5 +1,5 @@
 package com.example.routingSimulator.modules.models;
-public class Model{
+public abstract class Model{
     private static int publicID=0;
     private int modelID;
     public Model(){
@@ -17,6 +17,7 @@ public class Model{
     public int getModelID(){return this.modelID;}
     public String getType(){return null;}
     public void setIpv4(String ipv4){}
+    public abstract String getId();
 }
 
 //add model directly to network on adding or else error can come

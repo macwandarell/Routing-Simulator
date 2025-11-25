@@ -12,6 +12,7 @@ import com.example.routingSimulator.modules.models.device.Device;
 import com.example.routingSimulator.modules.models.dhcp.Dhcp;
 import com.example.routingSimulator.modules.models.publicServer.PublicServer;
 import com.example.routingSimulator.modules.models.DnsServer.DNSServer;
+import java.util.ArrayList;
 
 
 
@@ -322,6 +323,35 @@ public class SandboxService {
         } catch (Exception e) {
             return "Error: " + e.getMessage();
         }
+    }
+    public String getAllManagers(int id){
+        StringBuilder sb= new StringBuilder();
+        GlobeManager globeManager = sandboxRegistry.get(id);
+        if (globeManager == null) {
+            return "Sandbox with ID " + id + " not found.";
+        }
+        ArrayList<Manager> managerArrayList = globeManager.getAllManager();
+        for(Manager m: managerArrayList){
+            sb.append(m.viewDetails()).append("<br>");
+        }
+        return sb.toString();
+    }
+    public String getAllDevices(int id,String mid){
+        StringBuilder sb= new StringBuilder();
+        GlobeManager globeManager = sandboxRegistry.get(id);
+        if (globeManager == null) {
+            return "Sandbox with ID " + id + " not found.";
+        }
+        Manager manager = globeManager.findManagerById(mid);
+        if (manager == null) {
+            return "Manager with ID " + mid + " not found.";
+        }
+        ArrayList<Model> deviceArrayList = globeManager.getAllDevicesofManager(mid);
+        for(Model m: deviceArrayList){
+            if(m!=null){
+            sb.append(m.getModelID()).append(" - ").append(m.getId()).append(" - ").append(m.getType()).append("<br>");}
+        }
+        return sb.toString();
     }
 
 
