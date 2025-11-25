@@ -245,6 +245,11 @@ public class SandboxService {
             sb.append("<button type='submit' style='margin-top:10px;padding:10px;background:darkred;border:none;color:white;'>Add IPs to DHCP</button>");
             sb.append("</form>");
 
+            sb.append(String.format(
+                    "<a href='/play/sandbox/%s/command' style='color:red;text-decoration:none;'>/play/sandbox/%s/command</a>"
+                            + "&nbsp;&nbsp;<span style='color:yellow;'>- goes back to this sandbox page</span><br>",
+                    id, id));
+
             sb.append("<a href='/play' style='color:red;text-decoration:none;'>/play</a>").append("&nbsp;&nbsp;<span style='color:yellow;'>- goes back to the playground page</span><br>");
             sb.append("<p style='color:yellow;'>Last action: " + responseMessage + "</p><br>");
 

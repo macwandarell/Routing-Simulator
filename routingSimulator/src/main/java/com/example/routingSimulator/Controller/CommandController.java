@@ -1,10 +1,7 @@
 package com.example.routingSimulator.Controller;
 
 import com.example.routingSimulator.service.CommandService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/play/sandbox/{id}/command")
@@ -19,6 +16,12 @@ public class CommandController {
     public String index(@PathVariable int id) {
         return commandService.getWelcomeMessage(id);
     }
+
+    @PostMapping
+    public int pingCommand(@PathVariable int id) {
+        return commandService.print(id);
+    }
+
 
 
 
