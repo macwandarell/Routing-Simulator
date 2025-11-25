@@ -224,6 +224,9 @@ public class SandboxService {
             sb.append("<button type='submit' style='margin-top:10px;padding:10px;background:darkred;border:none;color:white;'>Create Manager</button>");
             sb.append("</form>");
 
+
+            sb.append("<br><hr style='border-color:gray;'><br>");
+
             sb.append("<h3 style='color:cyan;'>Add new device in a particular manager in this Sandbox</h3>");
             sb.append("<form method='POST' action='/play/sandbox/").append(id).append("' style='display:flex;flex-direction:column;max-width:400px;'>");
             sb.append("<textarea name='json' style='height:150px;width:100%;background:black;color:white;border:1px solid gray;padding:10px;'>");
@@ -232,6 +235,15 @@ public class SandboxService {
             sb.append("<button type='submit' style='margin-top:10px;padding:10px;background:darkred;border:none;color:white;'>Add Device</button>");
             sb.append("</form>");
 
+            sb.append("<br><hr style='border-color:gray;'><br>");
+
+            sb.append("<h3 style='color:cyan;'>Add dhcp ips to a particular manager dhcp in this Sandbox</h3>");
+            sb.append("<form method='POST' action='/play/sandbox/").append(id).append("' style='display:flex;flex-direction:column;max-width:400px;'>");
+            sb.append("<textarea name='json' style='height:150px;width:100%;background:black;color:white;border:1px solid gray;padding:10px;'>");
+            sb.append("{\n  \"addDhcpIpList\": {\n    \"managerId\": \"manager1\",\n    \"number\": 50\n}\n}");
+            sb.append("</textarea>");
+            sb.append("<button type='submit' style='margin-top:10px;padding:10px;background:darkred;border:none;color:white;'>Add IPs to DHCP</button>");
+            sb.append("</form>");
 
             sb.append("<a href='/play' style='color:red;text-decoration:none;'>/play</a>").append("&nbsp;&nbsp;<span style='color:yellow;'>- goes back to the playground page</span><br>");
             sb.append("<p style='color:yellow;'>Last action: " + responseMessage + "</p><br>");
@@ -290,6 +302,18 @@ public class SandboxService {
                 manager.addEntity(model);
 
                     return "Added device " + deviceId + " to manager " + managerId;
+
+            }
+            else if (root.has("addDhcpIpList")){
+                JsonNode cmd = root.get("addDhcpIpList");
+                String managerId = cmd.get("managerId").asText();
+                int no = cmd.get("number").asInt();
+                Manager manager = globeManager.findManagerById(managerId);
+                if (manager == null) {
+                    return "Manager with ID " + managerId + " not found.";
+                }
+                globeManager.giveManagerDhcpIp(managerId,no);
+                return "Added DHCP IPs " + no + " ,to manager " + managerId;
 
             }
 

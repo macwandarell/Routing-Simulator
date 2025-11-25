@@ -3,22 +3,19 @@ package com.example.routingSimulator.modules.network.ip;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Random;
+import java.util.List;
+import java.util.ArrayList;
 
 public class PrivateIpv4Generator {
     private Random rand= new Random();
-    public static int no=0;
-    public void generateIps(int count){
-        try(FileWriter writer= new FileWriter("data/ip_list_"+no+".txt")){
+    public PrivateIpv4Generator(){}
+    public List<String> generateIps(int count) {
+        List<String> ipList = new ArrayList<>();
             for (int i = 0; i < count; i++) {
                 String ip = generateSinglePrivateIP();
-                writer.write(ip + "\n");
+                ipList.add(ip);
             }
-            System.out.println("Generated " + count + " IPs in ip_list_"+no+".txt");
-            no++;
-        }
-        catch (IOException e) {
-            e.printStackTrace();
-        }
+        return ipList;
     }
     private String generateSinglePrivateIP() {
         int choice = rand.nextInt(3);

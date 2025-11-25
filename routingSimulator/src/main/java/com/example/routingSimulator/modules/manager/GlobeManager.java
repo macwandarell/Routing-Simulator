@@ -5,18 +5,20 @@ import com.example.routingSimulator.modules.network.Graph.Algo;
 import com.example.routingSimulator.modules.network.Graph.Network;
 import com.example.routingSimulator.modules.network.Link.Link;
 import com.example.routingSimulator.modules.network.ip.Ipv4;
+import com.example.routingSimulator.modules.network.ip.PrivateIpv4Generator;
 import guru.nidi.graphviz.engine.Format;
 import guru.nidi.graphviz.engine.Graphviz;
 import guru.nidi.graphviz.model.MutableGraph;
 import static guru.nidi.graphviz.model.Factory.*;
 import java.util.ArrayList;
+import java.util.List;
 
 public class GlobeManager{
     
     
     public Network grid;
     public Algo dijkstra;
-    
+    private PrivateIpv4Generator generator= new PrivateIpv4Generator();
     
     private String name;
     private ArrayList<Manager> managers;
@@ -65,6 +67,17 @@ public class GlobeManager{
         catch (ArrayIndexOutOfBoundsException e){
             System.out.println("Failed to assign ip" + e.getMessage());}
         return null;
+    }
+    public void giveManagerDhcpIp(String id,int no){
+        for(Manager manager:managers){
+            if(manager.viewDetails().equals(id)){
+                List<String> ips = generator.generateIps(no);
+                for(String ip : ips){
+                    manager.addIpToDhcp(ip);
+                }
+                break;
+            }
+        }
     }
     public boolean publicIpExists(String ipv4){
         for(Manager manager:managers){
