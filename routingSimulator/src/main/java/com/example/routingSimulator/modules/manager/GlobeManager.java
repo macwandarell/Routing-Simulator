@@ -4,6 +4,10 @@ import com.example.routingSimulator.modules.models.Model;
 import com.example.routingSimulator.modules.network.Graph.Algo;
 import com.example.routingSimulator.modules.network.Graph.Network;
 import com.example.routingSimulator.modules.network.ip.Ipv4;
+import guru.nidi.graphviz.engine.Format;
+import guru.nidi.graphviz.engine.Graphviz;
+import guru.nidi.graphviz.model.MutableGraph;
+import static guru.nidi.graphviz.model.Factory.*;
 import java.util.ArrayList;
 
 public class GlobeManager{
@@ -68,5 +72,19 @@ public class GlobeManager{
             if (found != null) return found;
         }
         return null;
+    }
+
+    public String printView(){
+        MutableGraph g = mutGraph("network").setDirected(false);
+
+        for (Manager m : managers) {
+            g.add(mutNode(m.getId()));
+        }
+        for (Link link : grid.getLinks()) {
+            String a = link.getNodeA().getId();
+            String b = link.getNodeB().getId();
+            g.add(mutNode(a).addLink(mutNode(b)));
+        }
+        return Graphviz.fromGraph(g).render(Format.SVG).toString();
     }
 }

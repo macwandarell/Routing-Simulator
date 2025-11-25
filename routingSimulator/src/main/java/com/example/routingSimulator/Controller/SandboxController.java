@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.PathVariable;
 
 @RestController
 @RequestMapping("/play/sandbox")
@@ -23,5 +24,8 @@ public class SandboxController {
     public String createSandbox(@RequestParam("json") String json) {
         return sandboxService.createSandbox(json);
     }
-
+    @GetMapping("/{id}")
+    public String openSandbox(@PathVariable int id) {
+        return sandboxService.openSandbox(id);
+    }
 }

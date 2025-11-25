@@ -34,7 +34,7 @@ public class SandboxService {
                 + "font-family: monospace; "
                 + "padding: 20px; "
                 + "box-sizing: border-box; "
-                + "background-color: rgba(0,0,0,0.5); "  // semi-transparent overlay
+                + "background-color: rgba(0,0,0,0.5); "
                 + "overflow-y: auto;"
                 + "\">");
 
@@ -53,7 +53,6 @@ public class SandboxService {
         // Commands section
         sb.append("<br>");
         sb.append("<span style='color:yellow;'>Here is a list of the available commands (case doesn't matter)</span><br>");
-        //i want the user to give a json object here and use post for him to create a new sandbox, the output of which will give the user the id of the sandbox
         sb.append("<a href='/play/sandbox' style='color:red;text-decoration:none;'>/play/sandbox</a>").append("&nbsp;&nbsp;<span style='color:yellow;'>- creates a new sandbox to work on</span><br>");
         sb.append("<br><hr style='border-color:gray;'><br>");
         sb.append("<h3 style='color:cyan;'>Create new Sandbox</h3>");
@@ -71,15 +70,46 @@ public class SandboxService {
         return sb.toString();
     }
     public String createSandbox(String json) {
+        StringBuilder sb= new StringBuilder();
+        sb.append("<div style=\""
+                + "background-image: url('/banners/background.jpg'); "
+                + "background-size: cover; "
+                + "background-repeat: no-repeat; "
+                + "background-position: center; "
+                + "width: 100vw; "
+                + "height: 100vh; "
+                + "color: white; "
+                + "font-family: monospace; "
+                + "padding: 20px; "
+                + "box-sizing: border-box; "
+                + "background-color: rgba(0,0,0,0.5); "
+                + "overflow-y: auto;"
+                + "\">");
         try {
             JsonNode node=objectMapper.readTree(json);
             String name = node.get("name").asText();
             GlobeManager globeManager = new GlobeManager(name);
             int id = sandboxRegistry.register(globeManager);
-            return "Sandbox created with ID: " + id;
+            sb.append("<br>");
+            sb.append("<span style='color:yellow;'>Created Sandbox Successfully.Here is a list of the available commands (case doesn't matter)</span><br>");
+            sb.append("<a href='/play/sandbox/").append(id).append("' style='color:red;text-decoration:none;'>/play/sandbox/").append(id).append("</a>").append("&nbsp;&nbsp;<span style='color:yellow;'>- go to the created sandbox</span><br>");
+            sb.append("<a href='/play/sandbox' style='color:red;text-decoration:none;'>/play/sandbox</a>").append("&nbsp;&nbsp;<span style='color:yellow;'>- goes back to the sandbox page</span><br>");
+            sb.append("<a href='/play' style='color:red;text-decoration:none;'>/play</a>").append("&nbsp;&nbsp;<span style='color:yellow;'>- goes back to the playground page</span><br>");
+            sb.append("</div>");
+            return sb.toString();
         } catch (Exception e) {
-            return "Invalid JSON format: " + e.getMessage();
+            sb.append("<br>");
+            sb.append("<span style='color:yellow;'>Couldn't create Sandbox:").append(e.getMessage()).append("</span><br>");
+            sb.append("<span style='color:yellow;'>Here is a list of the available commands (case doesn't matter)</span><br>");
+            sb.append("<a href='/play/sandbox' style='color:red;text-decoration:none;'>/play/sandbox</a>").append("&nbsp;&nbsp;<span style='color:yellow;'>- goes back to the sandbox page</span><br>");
+            sb.append("<a href='/play' style='color:red;text-decoration:none;'>/play</a>").append("&nbsp;&nbsp;<span style='color:yellow;'>- goes back to the playground page</span><br>");
+            sb.append("</div>");
+            return sb.toString();
         }
+    }
+    public String openSandbox(int id){
+        GlobeManager globemanager= sandboxRegistry.get(id);
+        return globemanager.getName();
     }
 
 }
