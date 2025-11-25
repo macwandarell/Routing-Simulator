@@ -7,9 +7,10 @@ import com.example.routingSimulator.modules.network.ip.Ipv4;
 import java.util.ArrayList;
 
 public class GlobeManager{
+    private String name;
     private ArrayList<Manager> managers = new ArrayList<Manager>();
     private ArrayList<Ipv4> publicIps=new ArrayList<Ipv4>();
-    public GlobeManager(){
+    public GlobeManager(String name){
         int first = 193;
         int second = 168;
 
@@ -20,6 +21,7 @@ public class GlobeManager{
                 publicIps.add(ipadd);
             }
         }
+        this.name = name;
     }
     public Network grid=new Network();
     public Algo dijkstra=new Algo(grid);
@@ -27,6 +29,12 @@ public class GlobeManager{
         manager.setPublicIp(assignIp());
         managers.add(manager);
         System.out.println("Successfully added: "+ manager.viewDetails());
+    }
+    public String getName(){
+        return name;
+    }
+    public void setName(String name){
+        this.name = name;
     }
     private String assignIp(){
         try{

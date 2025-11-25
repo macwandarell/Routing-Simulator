@@ -43,8 +43,9 @@ public class PlayService {
         // Commands section
         sb.append("<br>");
         sb.append("<span style='color:yellow;'>Here is a list of the available commands (case doesn't matter)</span><br>");
-        sb.append("<span style='color:red;'>/play</span>&nbsp;&nbsp;<span style='color:yellow;'>- prints a list of executable commands at the play page</span><br>");
-        sb.append("<span style='color:red;'>/sandbox</span>&nbsp;&nbsp;<span style='color:yellow;'>- creates a new sandbox to work on</span><br>");
+        sb.append("<a href='/play' style='color:red;text-decoration:none;'>/play</a>").append("&nbsp;&nbsp;<span style='color:yellow;'>- prints a list of executable commands at the play page</span><br>");
+        sb.append("<a href='/play/sandbox' style='color:red;text-decoration:none;'>/play/sandbox</a>").append("&nbsp;&nbsp;<span style='color:yellow;'>- creates a new sandbox to work on</span><br>");
+        sb.append("<a href='/' style='color:red; text-decoration:none;'>/</a>").append("&nbsp;&nbsp;<span style='color:yellow;'>- goes back to the home page</span><br>");
 
         sb.append("</div>");
 
