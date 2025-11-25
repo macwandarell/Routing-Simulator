@@ -14,14 +14,21 @@ import java.util.ArrayList;
 public class GlobeManager{
     
     
-    public Network grid=new Network();
-    public Algo dijkstra=new Algo(grid);
+    public Network grid;
+    public Algo dijkstra;
     
     
     private String name;
-    private ArrayList<Manager> managers = new ArrayList<Manager>();
-    private ArrayList<Ipv4> publicIps=new ArrayList<Ipv4>();
+    private ArrayList<Manager> managers;
+    private ArrayList<Ipv4> publicIps;
+
     public GlobeManager(String name){
+
+        grid=new Network();
+        dijkstra=new Algo(grid);
+        managers = new ArrayList<Manager>();
+        publicIps=new ArrayList<Ipv4>();
+
         int first = 193;
         int second = 168;
 
