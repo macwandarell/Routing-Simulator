@@ -2,6 +2,9 @@ package com.example.routingSimulator.service;
 import com.example.routingSimulator.modules.commands.PingCommand;
 import java.util.List;
 
+// START OF MODIFICATION: Added necessary imports for DNS logic
+import java.util.Map;
+import com.example.routingSimulator.modules.commands.NsLookup;
 
 import com.example.routingSimulator.modules.manager.GlobeManager;
 import com.example.routingSimulator.modules.manager.Manager;
@@ -68,10 +71,13 @@ public class CommandService {
         sb.append("<a href='/play/sandbox/").append(id).append("' style='color:red;text-decoration:none;'>/play/sandbox/").append(id).append("</a>").append("&nbsp;&nbsp;<span style='color:yellow;'>- The current page you are in</span><br>");
         sb.append("<br><hr style='border-color:gray;'><br>");
         sb.append("<h3 style='color:cyan;'>NSLookup Command</h3>");
-        sb.append("<form method='POST' action='/play/sandbox/").append(id).append("' style='display:flex;flex-direction:column;max-width:400px;'>");
+        // START OF MODIFICATION: Updated HTML to show correct DNS JSON format
+        sb.append("<p style='font-size:12px;color:gray;'>Keys: 'nslookup', 'addDnsRecord', 'deleteDnsRecord', 'getDnsRecords'</p>");
+        sb.append("<form method='POST' action='/play/sandbox/").append(id).append("/command").append("' style='display:flex;flex-direction:column;max-width:400px;'>");
         sb.append("<textarea name='json' style='height:150px;width:100%;background:black;color:white;border:1px solid gray;padding:10px;'>");
-        sb.append("{\n  \"addManager\": {\n    \"id\": \"manager1\"\n  }\n}");
+        sb.append("{\n  \"nslookup\": {\n    \"domain\": \"google.com\"\n  }\n}");
         sb.append("</textarea>");
+
         sb.append("<button type='submit' style='margin-top:10px;padding:10px;background:darkred;border:none;color:white;'>NSLookup</button>");
         sb.append("</form>");
 
@@ -269,14 +275,47 @@ public class CommandService {
 
     private String handleCommands(GlobeManager globeManager, JsonNode root) {
         try {
-            if (root.has("NSLookup")) {
-                JsonNode cmd = root.get("addManager");
 
-                String id = cmd.get("id").asText();
-                Manager manager = new Manager(id);
-                globeManager.addManager(manager);
-                return "Added manager " + id;
+            // START OF MODIFICATION: Replaced incorrect "addManager" logic with DNS Logic using globeManager
+            // Check for any of the 4 DNS keys
+            if (root.has("nslookup") || root.has("addDnsRecord") || root.has("deleteDnsRecord") || root.has("getDnsRecords")) {
+
+                // Get the DNS Server from the GlobeManager as requested
+                DNSServer dnsServer = globeManager.getDnsServer();
+
+                if (dnsServer == null) {
+                    return "Error: No DNS Server instance found in this Sandbox.";
+                }
+
+                if (root.has("nslookup")) {
+                    JsonNode cmd = root.get("nslookup");
+                    String domain = cmd.get("domain").asText();
+                    NsLookup lookup = new NsLookup();
+                    return lookup.execute(dnsServer, domain);
+                }
+                else if (root.has("addDnsRecord")) {
+                    JsonNode cmd = root.get("addDnsRecord");
+                    String domain = cmd.get("domain").asText();
+                    String ip = cmd.get("ip").asText();
+                    dnsServer.addDnsRecord(domain, ip);
+                    return "Success: Added DNS Record [" + domain + " -> " + ip + "]";
+                }
+                else if (root.has("deleteDnsRecord")) {
+                    JsonNode cmd = root.get("deleteDnsRecord");
+                    String domain = cmd.get("domain").asText();
+                    boolean removed = dnsServer.removeDnsRecord(domain);
+                    return removed ? "Success: Removed record for " + domain : "Error: Domain not found.";
+                }
+                else if (root.has("getDnsRecords")) {
+                    Map<String, String> records = dnsServer.getDnsRecords();
+                    if (records.isEmpty()) return "DNS Cache is empty.";
+                    StringBuilder sb = new StringBuilder("Current DNS Records:\n");
+                    records.forEach((k, v) -> sb.append(k).append(" -> ").append(v).append("\n"));
+                    return sb.toString();
+                }
             }
+            // END OF MODIFICATION
+
             else if (root.has("nmap")) {
                 JsonNode cmd = root.get("nmap");
 
