@@ -87,7 +87,7 @@ public class GlobeManager{
     }
     public Manager findManagerById(String id){
         for(Manager m: managers){
-            if(m.viewDetails()==id){
+            if(m.viewDetails().equals(id)){
                 return m;
             }
         }
