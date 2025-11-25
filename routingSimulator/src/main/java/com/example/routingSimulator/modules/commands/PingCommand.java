@@ -2,10 +2,14 @@ package com.example.routingSimulator.modules.commands;
 
 import com.example.routingSimulator.modules.manager.GlobeManager;
 import com.example.routingSimulator.modules.network.Graph.Algo;
+import com.example.routingSimulator.modules.network.ip.Ipv4;
+
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
+import com.example.routingSimulator.modules.commands.NmapCommand;
+
 
 public class PingCommand {
 
@@ -17,6 +21,10 @@ public class PingCommand {
     }
 
     public List<Double> pingForApi(int srcModelId, int destModelId, String destIp, int count) {
+
+
+
+
         int nodeCount = globeManager.grid.getAdjList().size();
 
         if (nodeCount == 0 ||
@@ -52,4 +60,6 @@ public class PingCommand {
         double delta = ThreadLocalRandom.current().nextDouble(-jitterRange, jitterRange);
         return Math.max(1.0, baseRtt + delta);
     }
+
+
 }

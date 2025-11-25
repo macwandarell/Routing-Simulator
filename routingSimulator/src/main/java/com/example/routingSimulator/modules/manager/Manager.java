@@ -30,11 +30,11 @@ public class Manager{
             dhcpServer = (Dhcp)entity;
             return;
         }
-        if(entity.getType().equals("PublicServer")){
-            publicServer = (PublicServer) entity;
-            publicServer.setIpv4(publicIp);
-            return;
-        }
+//        if(entity.getType().equals("PublicServer")){
+//            publicServer = (PublicServer) entity;
+//            publicServer.setIpv4(publicIp);
+//            return;
+//        }
 
 
 

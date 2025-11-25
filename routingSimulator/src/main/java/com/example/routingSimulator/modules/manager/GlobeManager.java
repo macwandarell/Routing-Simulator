@@ -62,7 +62,7 @@ public class GlobeManager{
         dijkstra=new Algo(grid);
         managers = new ArrayList<Manager>();
         publicIps=new ArrayList<Ipv4>();
-        dnsServer=new DNSServer("192.168.1.1");
+        dnsServer=new DNSServer("192.168.1.1",this);
 
         int first = 193;
         int second = 168;
@@ -186,7 +186,7 @@ public class GlobeManager{
         }
 
         return mutNode(id)
-                .add(Label.of(type + "\nID: " + id))
+                .add(Label.of(type + "\nID: " + id+"\n IP: "+model.getIpv4()))
                 .add(shape)
                 .add(color);
     }

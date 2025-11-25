@@ -336,7 +336,7 @@ public class SandboxService {
                      model = new PublicServer(deviceId);
                  }
                  else if(deviceType.equals("DNSServer")){
-                     model = new DNSServer(deviceId);
+                     model = new DNSServer(deviceId,globeManager);
                  }
                  else
                 if(deviceType.equals("Router")) {

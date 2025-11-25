@@ -1,6 +1,8 @@
 package com.example.routingSimulator.modules.models.DnsServer;
 
+import com.example.routingSimulator.modules.manager.GlobeManager;
 import com.example.routingSimulator.modules.models.Model;
+import com.example.routingSimulator.modules.models.publicServer.PublicServer;
 import com.example.routingSimulator.modules.network.ip.Ipv4;
 import java.util.HashMap;
 import java.io.*;
@@ -8,24 +10,29 @@ import java.io.*;
 public class DNSServer extends Model
 {
     HashMap<String,String> dnsRecords; // Maps domain names to IP addresses
+    private final GlobeManager globeManager;
+
     Ipv4 ipv4;
     private String id;
 
     // Constructor
-    public DNSServer(String ipv4,String id)
+    public DNSServer(String ipv4,String id,GlobeManager globeManager)
     {
         super();
         this.ipv4 = new Ipv4(ipv4);
         dnsRecords=new HashMap<String,String>();
         loadRecords();
         this.id=id;
+        this.globeManager = globeManager;
+
     }
-    public DNSServer(String ipv4)
+    public DNSServer(String ipv4, GlobeManager globeManager)
     {
         super();
         this.ipv4 = new Ipv4(ipv4);
         dnsRecords=new HashMap<String,String>();
         loadRecords();
+        this.globeManager = globeManager;
     }
 
     public String getServerIP()
@@ -110,6 +117,14 @@ public class DNSServer extends Model
         String cleanDomain = normalize(domainName);
 
         if(validateDomain(cleanDomain)) {
+            Model model = globeManager.findModelByIp(ipAddress);
+            if(model == null || model.getType().compareTo("PublicServer") != 0){
+                throw new IllegalArgumentException("PublicServer doesnt exist " + domainName);
+            }
+
+            PublicServer temp = (PublicServer) model;
+
+            temp.setDomainName(domainName);
             dnsRecords.put(cleanDomain, ipAddress);
             saveRecords();
         }else{

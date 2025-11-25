@@ -87,7 +87,7 @@ public class CommandService {
         sb.append("<h3 style='color:cyan;'>NMAP</h3>");
         sb.append("<form method='POST' action='/play/sandbox/").append(id).append("/command").append("' style='display:flex;flex-direction:column;max-width:400px;'>");
         sb.append("<textarea name='json' style='height:150px;width:100%;background:black;color:white;border:1px solid gray;padding:10px;'>");
-        sb.append("{\n" + "  \"nmap\": {\n" + "    \"target\": \"scanme.nmap.org\",\n" + "    \"startPort\": 1,\n" + "    \"endPort\": 1024,\n" + "    \"timeoutMs\": 200\n" + "  }\n" + "}");
+        sb.append("{\n" + "  \"nmap\": {\n" + "    \"target\": \"172.25.182.58\",\n" + "    \"startPort\": 1,\n" + "    \"endPort\": 1024,\n" + "    \"timeoutMs\": 200\n" + "  }\n" + "}");
         sb.append("</textarea>");
         sb.append("<button type='submit' style='margin-top:10px;padding:10px;background:darkred;border:none;color:white;'>NMAP</button>");
         sb.append("</form>");
@@ -95,7 +95,7 @@ public class CommandService {
         sb.append("<br><hr style='border-color:gray;'><br>");
 
         sb.append("<h3 style='color:cyan;'>Ping</h3>");
-        sb.append("<form method='POST' action='/play/sandbox/").append(id).append("command").append("' style='display:flex;flex-direction:column;max-width:400px;'>");
+        sb.append("<form method='POST' action='/play/sandbox/").append(id).append("/command").append("' style='display:flex;flex-direction:column;max-width:400px;'>");
         sb.append("<textarea name='json' style='height:150px;width:100%;background:black;color:white;border:1px solid gray;padding:10px;'>");
         sb.append("{\n" +
                 "  \"Ping\": {\n" +
@@ -246,8 +246,11 @@ public class CommandService {
                 if (srcModel == null) {
                     return "Source IP " + modelID + " not found in this sandbox.";
                 }
+                NmapCommand nmapCommand = new NmapCommand(globeManager,globeManager.getDnsServer(),false);
 
-                Model destModel = globeManager.findModelByIp(destIp);
+                String ip = nmapCommand.resolveTargetToIp(destIp);
+
+                Model destModel = globeManager.findModelByIp(ip);
                 if (destModel == null) {
                     return "Destination IP " + destIp + " not found in this sandbox.";
                 }

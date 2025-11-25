@@ -35,7 +35,7 @@ public class NmapCommand {
     private final GlobeManager globeManager;
     private final boolean simulateOnly;
     private final Map<Integer, String> commonServices = new HashMap<>();
-
+    
     public NmapCommand(GlobeManager globeManager, DNSServer dnsServer, boolean simulateOnly) {
         this.globeManager = globeManager;
         this.dnsServer = dnsServer;
@@ -47,7 +47,7 @@ public class NmapCommand {
         this(globeManager, dnsServer, false);
     }
 
-    private boolean isIpv4(String input) {
+    public boolean isIpv4(String input) {
         if (input == null) return false;
         // Very simple IPv4 validation
         String[] parts = input.trim().split("\\.");
@@ -63,7 +63,7 @@ public class NmapCommand {
         }
     }
 
-    private String resolveTargetToIp(String target) {
+    public String resolveTargetToIp(String target) {
         if (isIpv4(target)) return target;
 
         // Attempt to resolve using the provided DNSServer
