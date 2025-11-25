@@ -2,9 +2,10 @@ package com.example.routingSimulator.modules.commands;
 
 import com.example.routingSimulator.modules.manager.GlobeManager;
 import com.example.routingSimulator.modules.network.Graph.Algo;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
-
-
 
 public class PingCommand {
 
@@ -15,38 +16,30 @@ public class PingCommand {
         this.globeManager = globeManager;
     }
 
-    public void ping(int srcModelId, int destModelId, String destIp, int count) {
-        if (globeManager.publicIpExists(destIp)) {
-            pingPublic(srcModelId, destModelId, destIp, count);
-        } else {
-            pingInternal(srcModelId, destModelId, destIp, count);
-        }
-    }
+    public List<Double> pingForApi(int srcModelId, int destModelId, String destIp, int count) {
+        int nodeCount = globeManager.grid.getAdjList().size();
 
-    private void pingPublic(int srcModelId, int destModelId, String destIp, int count) {
-        if (!globeManager.publicIpExists(destIp)) {
-            System.out.println("Destination host unreachable.");
-            return;
+        if (nodeCount == 0 ||
+                srcModelId < 0 || srcModelId >= nodeCount ||
+                destModelId < 0 || destModelId >= nodeCount) {
+            System.out.println("⚠️ Invalid source/destination ID or empty network.");
+            return List.of();
         }
+
         Algo algo = new Algo(globeManager.grid);
         double[] dist = algo.dijkstra(srcModelId, destModelId);
-        if (destModelId < 0 || destModelId >= dist.length || Double.isInfinite(dist[destModelId])) {
-            System.out.println("No route to host.");
-            return;
-        }
-        double baseRttMs = computeRttFromCost(dist[destModelId]);
-        printPingOutput(destIp, baseRttMs, count);
-    }
 
-    private void pingInternal(int srcModelId, int destModelId, String destIp, int count) {
-        Algo algo = new Algo(globeManager.grid);
-        double[] dist = algo.dijkstra(srcModelId, destModelId);
-        if (destModelId < 0 || destModelId >= dist.length || Double.isInfinite(dist[destModelId])) {
-            System.out.println("No route to host.");
-            return;
+        if (Double.isInfinite(dist[destModelId])) {
+            System.out.println("⚠️ No valid route found.");
+            return List.of();
         }
+
         double baseRttMs = computeRttFromCost(dist[destModelId]);
-        printPingOutput(destIp, baseRttMs, count);
+        List<Double> times = new ArrayList<>();
+        for (int i = 0; i < count; i++) {
+            times.add(addJitter(baseRttMs));
+        }
+        return times;
     }
 
     private double computeRttFromCost(double cost) {
@@ -59,15 +52,4 @@ public class PingCommand {
         double delta = ThreadLocalRandom.current().nextDouble(-jitterRange, jitterRange);
         return Math.max(1.0, baseRtt + delta);
     }
-
-    private void printPingOutput(String destIp, double baseRtt, int count) {
-        System.out.println("Pinging " + destIp + " with 32 bytes of data:");
-        for (int i = 0; i < count; i++) {
-            double rtt = addJitter(baseRtt);
-            System.out.printf("Reply from %s: time=%.2fms%n", destIp, rtt);
-        }
-    }
-
 }
-
-

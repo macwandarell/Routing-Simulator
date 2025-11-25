@@ -1,4 +1,7 @@
 package com.example.routingSimulator.service;
+import com.example.routingSimulator.modules.commands.PingCommand;
+import java.util.List;
+
 
 import com.example.routingSimulator.modules.manager.GlobeManager;
 import com.example.routingSimulator.modules.manager.Manager;
@@ -87,10 +90,40 @@ public class CommandService {
         sb.append("<h3 style='color:cyan;'>Ping</h3>");
         sb.append("<form method='POST' action='/play/sandbox/").append(id).append("' style='display:flex;flex-direction:column;max-width:400px;'>");
         sb.append("<textarea name='json' style='height:150px;width:100%;background:black;color:white;border:1px solid gray;padding:10px;'>");
-        sb.append("{\n  \"addDhcpIpList\": {\n    \"managerId\": \"manager1\",\n    \"number\": 50\n}\n}");
+        sb.append("{\n" +
+                "  \"Ping\": {\n" +
+                "    \"sourceIp\": \"10.0.0.2\",\n" +
+                "    \"destIp\": \"193.168.0.45\",\n" +
+                "    \"count\": 4\n" +
+                "  }\n" +
+                "}");
+
         sb.append("</textarea>");
         sb.append("<button type='submit' style='margin-top:10px;padding:10px;background:darkred;border:none;color:white;'>PING</button>");
         sb.append("</form>");
+        sb.append("<div id='pingOutput' "
+                + "style='margin-top:15px;padding:10px;background-color:black;color:lime;"
+                + "border:1px solid gray;width:100%;max-width:400px;min-height:50px;"
+                + "font-family:monospace;white-space:pre-wrap;'>"
+                + "Output will appear here..."
+                + "</div>");
+        sb.append("<script>"
+                + "document.querySelector(\"form[action='/play/sandbox/" + id + "'] button[type='submit']\").addEventListener('click', function(e) {"
+                + "e.preventDefault();"
+                + "var form = this.closest('form');"
+                + "var data = new FormData(form);"
+                + "fetch(form.action, { method: 'POST', body: data })"
+                + ".then(r => r.text())"
+                + ".then(html => {"
+                + "document.getElementById('pingOutput').innerText = html;"
+                + "})"
+                + ".catch(err => {"
+                + "document.getElementById('pingOutput').innerText = 'Error: ' + err;"
+                + "});"
+                + "});"
+                + "</script>");
+
+
 
         sb.append(String.format(
                 "<a href='/play/sandbox/%s/command' style='color:red;text-decoration:none;'>/play/sandbox/%s/command</a>"
@@ -179,10 +212,40 @@ public class CommandService {
             sb.append("<h3 style='color:cyan;'>Ping</h3>");
             sb.append("<form method='POST' action='/play/sandbox/").append(id).append("' style='display:flex;flex-direction:column;max-width:400px;'>");
             sb.append("<textarea name='json' style='height:150px;width:100%;background:black;color:white;border:1px solid gray;padding:10px;'>");
-            sb.append("{\n  \"addDhcpIpList\": {\n    \"managerId\": \"manager1\",\n    \"number\": 50\n}\n}");
+            sb.append("{\n" +
+                    "  \"Ping\": {\n" +
+                    "    \"sourceIp\": \"10.0.0.2\",\n" +
+                    "    \"destIp\": \"193.168.0.45\",\n" +
+                    "    \"count\": 4\n" +
+                    "  }\n" +
+                    "}");
+
             sb.append("</textarea>");
             sb.append("<button type='submit' style='margin-top:10px;padding:10px;background:darkred;border:none;color:white;'>PING</button>");
             sb.append("</form>");
+            sb.append("<div id='pingOutput' "
+                    + "style='margin-top:15px;padding:10px;background-color:black;color:lime;"
+                    + "border:1px solid gray;width:100%;max-width:400px;min-height:50px;"
+                    + "font-family:monospace;white-space:pre-wrap;'>"
+                    + "Output will appear here..."
+                    + "</div>");
+            sb.append("<script>"
+                    + "document.querySelector(\"form[action='/play/sandbox/" + id + "'] button[type='submit']\").addEventListener('click', function(e) {"
+                    + "e.preventDefault();"
+                    + "var form = this.closest('form');"
+                    + "var data = new FormData(form);"
+                    + "fetch(form.action, { method: 'POST', body: data })"
+                    + ".then(r => r.text())"
+                    + ".then(html => {"
+                    + "document.getElementById('pingOutput').innerText = html;"
+                    + "})"
+                    + ".catch(err => {"
+                    + "document.getElementById('pingOutput').innerText = 'Error: ' + err;"
+                    + "});"
+                    + "});"
+                    + "</script>");
+
+
 
             sb.append(String.format(
                     "<a href='/play/sandbox/%s/command' style='color:red;text-decoration:none;'>/play/sandbox/%s/command</a>"
@@ -248,19 +311,51 @@ public class CommandService {
                 return "Added device " + deviceId + " to manager " + managerId;
 
             }
-            else if (root.has("Ping"))
-            {
-                JsonNode cmd = root.get("addDhcpIpList");
-                String managerId = cmd.get("managerId").asText();
-                int no = cmd.get("number").asInt();
-                Manager manager = globeManager.findManagerById(managerId);
-                if (manager == null) {
-                    return "Manager with ID " + managerId + " not found.";
-                }
-                globeManager.giveManagerDhcpIp(managerId,no);
-                return "Added DHCP IPs " + no + " ,to manager " + managerId;
+            else if (root.has("Ping")) {
+                JsonNode cmd = root.get("Ping");
 
+                String sourceIp = cmd.get("sourceIp").asText();
+                String destIp = cmd.get("destIp").asText();
+                int count = cmd.has("count") ? cmd.get("count").asInt() : 4;
+
+                Model srcModel = globeManager.findModelByIp(sourceIp);
+                if (srcModel == null) {
+                    return "Source IP " + sourceIp + " not found in this sandbox.";
+                }
+
+                Model destModel = globeManager.findModelByIp(destIp);
+                if (destModel == null) {
+                    return "Destination IP " + destIp + " not found in this sandbox.";
+                }
+
+                PingCommand pingCommand = new PingCommand(globeManager);
+                List<Double> times = pingCommand.pingForApi(
+                        srcModel.getModelID(),
+                        destModel.getModelID(),
+                        destIp,
+                        count
+                );
+
+                if (times.isEmpty()) {
+                    return "Ping failed: no route between " + sourceIp + " and " + destIp + ".";
+                }
+
+                double min = times.get(0);
+                double max = times.get(0);
+                double sum = 0.0;
+                for (double t : times) {
+                    if (t < min) min = t;
+                    if (t > max) max = t;
+                    sum += t;
+                }
+                double avg = sum / times.size();
+
+                return String.format(
+                        "Ping %s -> %s : %d packets, min=%.2fms, avg=%.2fms, max=%.2fms",
+                        sourceIp, destIp, times.size(), min, avg, max
+                );
             }
+
 
             return "Unknown command.";
 
