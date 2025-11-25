@@ -18,8 +18,8 @@ public class CommandController {
     }
 
     @PostMapping
-    public int pingCommand(@PathVariable int id) {
-        return commandService.print(id);
+    public String updateCommand(@PathVariable int id, @RequestParam("json") String json) {
+        return commandService.updateCommand(id,json);
     }
 
 
