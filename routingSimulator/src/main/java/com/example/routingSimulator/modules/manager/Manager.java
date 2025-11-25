@@ -79,4 +79,12 @@ public class Manager{
         }
         return null;
     }
+    public Model findModelById(String id){
+        for(Model entity: entities){
+            if(model.getModelID().equals(id)){
+                return entity;
+            }
+        }
+        return null;
+    }
 }
