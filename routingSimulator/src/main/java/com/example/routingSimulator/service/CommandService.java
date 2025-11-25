@@ -314,13 +314,13 @@ public class CommandService {
             else if (root.has("Ping")) {
                 JsonNode cmd = root.get("Ping");
 
-                String modelID = cmd.get("modelID").asInt();
+                String modelID = cmd.get("modelID").asText();
                 String destIp = cmd.get("destIp").asText();
                 int count = cmd.has("count") ? cmd.get("count").asInt() : 4;
 
                 Model srcModel = globeManager.findModelByID(modelID);
                 if (srcModel == null) {
-                    return "Source IP " + sourceIp + " not found in this sandbox.";
+                    return "Source IP " + modelID + " not found in this sandbox.";
                 }
 
                 Model destModel = globeManager.findModelByIp(destIp);
@@ -337,7 +337,7 @@ public class CommandService {
                 );
 
                 if (times.isEmpty()) {
-                    return "Ping failed: no route between " + sourceIp + " and " + destIp + ".";
+                    return "Ping failed: no route between " + modelID + " and " + destIp + ".";
                 }
 
                 double min = times.get(0);
@@ -352,7 +352,7 @@ public class CommandService {
 
                 return String.format(
                         "Ping %s -> %s : %d packets, min=%.2fms, avg=%.2fms, max=%.2fms",
-                        sourceIp, destIp, times.size(), min, avg, max
+                        modelID, destIp, times.size(), min, avg, max
                 );
             }
 

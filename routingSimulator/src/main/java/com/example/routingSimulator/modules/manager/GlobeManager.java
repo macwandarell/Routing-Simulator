@@ -29,7 +29,10 @@ public class GlobeManager{
     {
         return managers;
     }
-
+    public Network getNetwork()
+    {
+        return grid;
+    }
     public ArrayList<Model> getAllDevicesofManager(String id)
     {
         for(Manager m:managers)

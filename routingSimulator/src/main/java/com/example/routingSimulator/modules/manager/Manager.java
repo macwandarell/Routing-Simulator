@@ -81,7 +81,7 @@ public class Manager{
     }
     public Model findModelById(String id){
         for(Model entity: entities){
-            if(model.getModelID().equals(id)){
+            if(entity.getModelID()==(Integer.valueOf(id))){
                 return entity;
             }
         }

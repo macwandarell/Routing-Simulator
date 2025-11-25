@@ -1,5 +1,7 @@
 package com.example.routingSimulator.service;
 
+import com.example.routingSimulator.modules.network.Graph.Network;
+import com.example.routingSimulator.modules.network.Link.Link;
 import org.springframework.stereotype.Service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.example.routingSimulator.modules.manager.GlobeManager;
@@ -246,6 +248,17 @@ public class SandboxService {
             sb.append("<button type='submit' style='margin-top:10px;padding:10px;background:darkred;border:none;color:white;'>Add IPs to DHCP</button>");
             sb.append("</form>");
 
+
+            sb.append("<br><hr style='border-color:gray;'><br>");
+
+            sb.append("<h3 style='color:cyan;'>Add new link between 2 devices</h3>");
+            sb.append("<form method='POST' action='/play/sandbox/").append(id).append("' style='display:flex;flex-direction:column;max-width:400px;'>");
+            sb.append("<textarea name='json' style='height:150px;width:100%;background:black;color:white;border:1px solid gray;padding:10px;'>");
+            sb.append("{\n  \"addLink\": {\n    \"fromNode\": \"Model 1's id\",\n    \"toNode\": \"Model 2's id\",\n    \"LinkBandwidth\": \"1000\",\n    \"Type\": \"KBPS\"\n }\n}");
+            sb.append("</textarea>");
+            sb.append("<button type='submit' style='margin-top:10px;padding:10px;background:darkred;border:none;color:white;'>Add Link</button>");
+            sb.append("</form>");
+
             sb.append(String.format(
                     "<a href='/play/sandbox/%s/command' style='color:red;text-decoration:none;'>/play/sandbox/%s/command</a>"
                             + "&nbsp;&nbsp;<span style='color:yellow;'>- goes back to this sandbox page</span><br>",
@@ -306,6 +319,8 @@ public class SandboxService {
                     model = new Router(deviceId);
                 }
                 manager.addEntity(model);
+                Network grid=globeManager.getNetwork();
+                grid.addNode(model);
 
                     return "Added device " + deviceId + " to manager " + managerId;
 
@@ -321,6 +336,19 @@ public class SandboxService {
                 globeManager.giveManagerDhcpIp(managerId,no);
                 return "Added DHCP IPs " + no + " ,to manager " + managerId;
 
+            }
+            else if(root.has("addLink")){
+                JsonNode cmd = root.get("addLink");
+                String fromNode = (cmd.get("fromNode").asText());
+                String toNode = (cmd.get("toNode").asText());
+                int linkBandwidth = Integer.valueOf(cmd.get("LinkBandwidth").asText());
+                String type = cmd.get("Type").asText();
+//                System.out.println("link errorrrr");
+                Link edge= new Link(globeManager.findModelByID(fromNode),globeManager.findModelByID(toNode),linkBandwidth,type);
+                Network grid=globeManager.getNetwork();
+                grid.addEdge(edge);
+//                System.out.println("link errorrrr22");
+                return "Added link between Model id:" + fromNode + " and Model id:" + toNode;
             }
 
             return "Unknown command.";
