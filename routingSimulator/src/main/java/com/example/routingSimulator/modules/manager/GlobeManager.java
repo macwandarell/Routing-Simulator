@@ -6,6 +6,7 @@ import com.example.routingSimulator.modules.network.Graph.Network;
 import com.example.routingSimulator.modules.network.Link.Link;
 import com.example.routingSimulator.modules.network.ip.Ipv4;
 import com.example.routingSimulator.modules.network.ip.PrivateIpv4Generator;
+import com.example.routingSimulator.modules.models.DnsServer.DNSServer;
 import guru.nidi.graphviz.engine.Format;
 import guru.nidi.graphviz.engine.Graphviz;
 import guru.nidi.graphviz.model.MutableGraph;
@@ -19,6 +20,7 @@ public class GlobeManager{
     public Network grid;
     public Algo dijkstra;
     private PrivateIpv4Generator generator= new PrivateIpv4Generator();
+    private DNSServer dnsServer;
     
     private String name;
     private ArrayList<Manager> managers;
@@ -51,6 +53,7 @@ public class GlobeManager{
         dijkstra=new Algo(grid);
         managers = new ArrayList<Manager>();
         publicIps=new ArrayList<Ipv4>();
+        dnsServer=new DNSServer("192.168.1.1");
 
         int first = 193;
         int second = 168;
@@ -129,6 +132,9 @@ public class GlobeManager{
             }
         }
         return null;
+    }
+    public DNSServer getDnsServer() {
+        return dnsServer;
     }
     public Model findModelByID(String Id){
         for(Manager m : managers){

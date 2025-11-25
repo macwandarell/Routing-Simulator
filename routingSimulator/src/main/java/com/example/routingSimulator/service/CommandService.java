@@ -14,6 +14,7 @@ import com.example.routingSimulator.modules.models.router.Router;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Service;
+import com.example.routingSimulator.modules.commands.NmapCommand;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -78,9 +79,9 @@ public class CommandService {
         sb.append("<br><hr style='border-color:gray;'><br>");
 
         sb.append("<h3 style='color:cyan;'>NMAP</h3>");
-        sb.append("<form method='POST' action='/play/sandbox/").append(id).append("' style='display:flex;flex-direction:column;max-width:400px;'>");
+        sb.append("<form method='POST' action='/play/sandbox/").append(id).append("/command").append("' style='display:flex;flex-direction:column;max-width:400px;'>");
         sb.append("<textarea name='json' style='height:150px;width:100%;background:black;color:white;border:1px solid gray;padding:10px;'>");
-        sb.append("{\n  \"addDevice\": {\n    \"managerId\": \"manager1\",\n    \"deviceId\": \"device1\",\n    \"deviceType\": \"device1\"\n }\n}");
+        sb.append("{\n" + "  \"nmap\": {\n" + "    \"target\": \"scanme.nmap.org\",\n" + "    \"startPort\": 1,\n" + "    \"endPort\": 1024,\n" + "    \"timeoutMs\": 200\n" + "  }\n" + "}");
         sb.append("</textarea>");
         sb.append("<button type='submit' style='margin-top:10px;padding:10px;background:darkred;border:none;color:white;'>NMAP</button>");
         sb.append("</form>");
@@ -200,9 +201,9 @@ public class CommandService {
             sb.append("<br><hr style='border-color:gray;'><br>");
 
             sb.append("<h3 style='color:cyan;'>NMAP</h3>");
-            sb.append("<form method='POST' action='/play/sandbox/").append(id).append("' style='display:flex;flex-direction:column;max-width:400px;'>");
+            sb.append("<form method='POST' action='/play/sandbox/").append(id).append("/command").append("' style='display:flex;flex-direction:column;max-width:400px;'>");
             sb.append("<textarea name='json' style='height:150px;width:100%;background:black;color:white;border:1px solid gray;padding:10px;'>");
-            sb.append("{\n  \"addDevice\": {\n    \"managerId\": \"manager1\",\n    \"deviceId\": \"device1\",\n    \"deviceType\": \"device1\"\n }\n}");
+            sb.append("{\n" + "  \"nmap\": {\n" +  "    \"target\": \"scanme.nmap.org\",\n" + "    \"startPort\": 1,\n" + "    \"endPort\": 1024,\n" + "    \"timeoutMs\": 200\n" + "  }\n" + "}");
             sb.append("</textarea>");
             sb.append("<button type='submit' style='margin-top:10px;padding:10px;background:darkred;border:none;color:white;'>NMAP</button>");
             sb.append("</form>");
@@ -276,39 +277,22 @@ public class CommandService {
                 globeManager.addManager(manager);
                 return "Added manager " + id;
             }
-            else if (root.has("NMap")) {
-                JsonNode cmd = root.get("addDevice");
+            else if (root.has("nmap")) {
+                JsonNode cmd = root.get("nmap");
 
-                String managerId = cmd.get("managerId").asText();
-                String deviceId = cmd.get("deviceId").asText();
-                String deviceType= cmd.get("deviceType").asText();
-                Manager manager = globeManager.findManagerById(managerId);
-                if (manager == null) {
-                    return "Manager with ID " + managerId + " not found.";
-                }
-                Model model = null;
+                String tar = cmd.get("target").asText();
+                String stport = cmd.get("startPort").asText();
+                String edport = cmd.get("endPort").asText();
+                String timeout = cmd.get("timeoutMs").asText();
 
-                // change the constructor of this models
-                // laude ata nai kya
-                if(deviceType.equals("Device")) {
-                    model = new Device(deviceId);
-                }
-                else if(deviceType.equals("DHCP")){
-                    model = new Dhcp(deviceId);
-                }
-                else if(deviceType.equals("PublicServer")){
-                    model = new PublicServer(deviceId);
-                }
-                else if(deviceType.equals("DNSServer")){
-                    model = new DNSServer(deviceId);
-                }
-                else
-                if(deviceType.equals("Router")) {
-                    model = new Router(deviceId);
-                }
-                manager.addEntity(model);
+                int startp = Integer.parseInt(stport);
+                int endp = Integer.parseInt(edport);
+                int timeo = Integer.parseInt(timeout);
 
-                return "Added device " + deviceId + " to manager " + managerId;
+                DNSServer dns = globeManager.getDnsServer();
+                NmapCommand nmap = new NmapCommand(globeManager, dns, true);
+                String result = nmap.scan(tar,startp,endp, timeo);
+                return result;
 
             }
             else if (root.has("Ping")) {
