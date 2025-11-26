@@ -1,7 +1,7 @@
 package com.example.routingSimulator.modules.models;
 
 import com.example.routingSimulator.modules.network.ip.Ipv4;
-
+import java.util.List;
 public abstract class Model{
     private static int publicID=0;
     private int modelID;
@@ -22,6 +22,7 @@ public abstract class Model{
     public void setIpv4(String ipv4){}
     public String getIpv4(){return "";}
     public abstract String getId();
+    public List<Integer> getActivePorts(){return null;}
 }
 
 //add model directly to network on adding or else error can come

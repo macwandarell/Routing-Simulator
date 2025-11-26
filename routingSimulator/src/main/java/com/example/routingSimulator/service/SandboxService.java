@@ -160,7 +160,6 @@ public class SandboxService {
         sb.append("<a href='/play/sandbox/").append(id).append("' style='color:red;text-decoration:none;'>/play/sandbox/").append(id).append("</a>").append("&nbsp;&nbsp;<span style='color:yellow;'>- The current page you are in</span><br>");
         sb.append("<br><hr style='border-color:gray;'><br>");
         sb.append("<h3 style='color:cyan;'>Create new manager in this Sandbox</h3>");
-        sb.append("<h3 style='color:cyan;'>Create new manager in this Sandbox</h3>");
         sb.append("<form method='POST' action='/play/sandbox/").append(id).append("' style='display:flex;flex-direction:column;max-width:400px;'>");
         sb.append("<textarea name='json' style='height:150px;width:100%;background:black;color:white;border:1px solid gray;padding:10px;'>");
         sb.append("{\n  \"addManager\": {\n    \"id\": \"manager1\"\n  }\n}");
@@ -272,7 +271,7 @@ public class SandboxService {
             sb.append("</form>");
 
             sb.append("<br><hr style='border-color:gray;'><br>");
-            sb.append("<h3 style='color:cyan;'>Get Shorted Path between 2 devices</h3>");
+            sb.append("<h3 style='color:cyan;'>Get Shortest Path between 2 devices</h3>");
             sb.append("<form method='POST' action='/play/sandbox/").append(id).append("' style='display:flex;flex-direction:column;max-width:400px;'>");
             sb.append("<textarea name='json' style='height:150px;width:100%;background:black;color:white;border:1px solid gray;padding:10px;'>");
             sb.append("{\n  \"getshortestpath\": {\n    \"fromNode\": \"Model 1's id\",\n    \"toNode\": \"Model 2's id\"\n }\n}");
@@ -459,6 +458,27 @@ public class SandboxService {
         }
         return sb.toString();
     }
+    public String getAllPorts(int id,String deviceid){
+        StringBuilder sb= new StringBuilder();
+        GlobeManager globeManager= sandboxRegistry.get(id);
+        if(globeManager==null){
+            return "Sandbox with ID " + id + " not found.";
+        }
+        Model model = globeManager.findModelByID(deviceid);
+        if(model==null){
+            return "Model with ID " + deviceid + " not found.";
+        }
+        if(model instanceof Device){
+        List<Integer> activePorts = model.getActivePorts();
+        for(int port: activePorts){
+        sb.append(port).append("<br>");}
+        }
+        else{
+            return "It has to be a device to list ports.";
+        }
+        return sb.toString();
+    }
+
 
 
 }
