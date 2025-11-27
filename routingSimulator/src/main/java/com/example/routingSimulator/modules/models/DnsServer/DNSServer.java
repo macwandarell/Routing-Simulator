@@ -15,7 +15,7 @@ public class DNSServer extends Model
     Ipv4 ipv4;
     private String id;
 
-    // Constructor
+    // Constructors
     public DNSServer(String ipv4,String id,GlobeManager globeManager)
     {
         super();
@@ -40,20 +40,25 @@ public class DNSServer extends Model
         return this.ipv4.getIpString();
     }
 
-    public HashMap<String, String> getDnsRecords() {
+    public HashMap<String, String> getDnsRecords()
+    {
         return dnsRecords;
     }
+
+
 
     private void loadRecords() {
         String filePath = "dns_records.txt";
         File file = new File(filePath);
 
-        // 1. Check if file exists first!
+        // Check if file exists first
         if (!file.exists()) {
             System.out.println("No DNS record file found. Starting with empty database.");
-            return; // Stop here, don't try to read
+            return; //stopping here since file doesn't exist
         }
 
+        //Chaining  We wrap 'FileReader' (which reads 1 byte at a time) inside 'BufferedReader' (which reads chunks).
+        // Benefit is this makes it faster and gives us the '.readLine()' method to process text line by line.
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
             String line;
             // Read line by line until the file ends (returns null)
@@ -75,14 +80,19 @@ public class DNSServer extends Model
             System.out.println("Error loading DNS records: " + e.getMessage());
         }
     }
-    public String getId(){return this.id;}
+    public String getId()
+    {
+        return this.id;
+
+    }
     private void saveRecords()
     {
         String filePath = "dns_records.txt";
 
-        // The "try(...)" syntax automatically closes the file when done (very important!)
+        // The "try(...)" syntax automatically closes the file when done
         try(BufferedWriter writer = new BufferedWriter(new FileWriter(filePath)))
         {
+            //We iterate through every Key-Value pair in the HashMap.
             for (HashMap.Entry<String, String> entry : dnsRecords.entrySet())
             {
                 String Domain = entry.getKey();
@@ -100,6 +110,8 @@ public class DNSServer extends Model
         }
     }
 
+    //convert all domains to lowercase and check
+    //Google.com is equivalent to google.com
     private String normalize(String domain)
     {
         return domain == null ? "" : domain.trim().toLowerCase();
@@ -118,6 +130,7 @@ public class DNSServer extends Model
 
         if(validateDomain(cleanDomain)) {
             Model model = globeManager.findModelByIp(ipAddress);
+            //implemented this to ensure domains map only to valid End-Servers, not to Routers or non-existent IPs.
             if(model == null || model.getType().compareTo("PublicServer") != 0){
                 throw new IllegalArgumentException("PublicServer doesnt exist " + domainName);
             }
@@ -127,6 +140,7 @@ public class DNSServer extends Model
             temp.setDomainName(domainName);
             dnsRecords.put(cleanDomain, ipAddress);
             saveRecords();
+
         }else{
             throw new IllegalArgumentException("Domain name already taken: " + domainName);
         }
