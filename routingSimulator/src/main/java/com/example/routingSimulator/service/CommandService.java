@@ -74,6 +74,8 @@ public class CommandService {
         // START OF MODIFICATION: Updated HTML to show correct DNS JSON format
         sb.append("<p style='font-size:12px;color:gray;'>Keys: 'nslookup', 'addDnsRecord', 'deleteDnsRecord', 'getDnsRecords'</p>");
         sb.append("<form method='POST' action='/play/sandbox/").append(id).append("/command").append("' style='display:flex;flex-direction:column;max-width:400px;'>");
+        //The name='json' attribute is vital.
+        // It tells the Controller "Send whatever is typed here as a parameter named json".
         sb.append("<textarea name='json' style='height:150px;width:100%;background:black;color:white;border:1px solid gray;padding:10px;'>");
         sb.append("{\n  \"nslookup\": {\n    \"domain\": \"google.com\"\n  }\n}");
         sb.append("</textarea>");
@@ -151,15 +153,17 @@ public class CommandService {
 
     public String updateCommand(int id, String json) {
         try {
+            //Parse JSON: Convert the raw String "{"nslookup":...}" into a tree object we can read.
             JsonNode root = objectMapper.readTree(json);
+
+            //Get Simulation: Find the specific network world (GlobeManager) for this user ID.
             GlobeManager globeManager = sandboxRegistry.get(id);
-
-
 
 
             if (globeManager == null) {
                 return "Sandbox with ID " + id + " not found.";
             }
+            //Run Logic: Call the method that actually does the work
             String responseMessage = handleCommands(globeManager, root);
 
 
@@ -182,7 +186,9 @@ public class CommandService {
             // Check for any of the 4 DNS keys
             if (root.has("nslookup") || root.has("addDnsRecord") || root.has("deleteDnsRecord") || root.has("getDnsRecords")) {
 
-                // Get the DNS Server from the GlobeManager as requested
+
+                //This is the moment your module connects to the topology.
+                //You are NOT creating a new server. You are finding the one that exists in the simulation.
                 DNSServer dnsServer = globeManager.getDnsServer();
 
                 if (dnsServer == null) {
@@ -193,6 +199,7 @@ public class CommandService {
                     JsonNode cmd = root.get("nslookup");
                     String domain = cmd.get("domain").asText();
                     NsLookup lookup = new NsLookup();
+                    //Delegate: Ask your NsLookup class to format the answer
                     return lookup.execute(dnsServer, domain);
                 }
                 else if (root.has("addDnsRecord")) {

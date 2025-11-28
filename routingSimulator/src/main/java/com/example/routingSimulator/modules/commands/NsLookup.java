@@ -2,6 +2,8 @@ package com.example.routingSimulator.modules.commands;
 
 import com.example.routingSimulator.modules.models.DnsServer.DNSServer;
 
+
+//This class separates the UI formatting logic from the Database logic (DNSServer).
 public class NsLookup
 {
     public String execute(DNSServer server,String domain)
