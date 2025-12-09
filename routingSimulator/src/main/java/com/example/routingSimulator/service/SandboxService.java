@@ -323,8 +323,7 @@ public class SandboxService {
                 }
                 Model model = null;
 
-                // change the constructor of this models
-                // laude ata nai kya
+
                  if(deviceType.equals("Device")) {
                      model = new Device(deviceId);
                  }
@@ -390,9 +389,11 @@ public class SandboxService {
                 String toNode = (cmd.get("toNode").asText());
                 Algo algo= globeManager.getDijkstra();
                 List<double[]> pathLinks= algo.findShortestPath(globeManager.findModelByID(fromNode),globeManager.findModelByID(toNode));
-                if(pathLinks==null){
+                if(pathLinks==null || pathLinks.isEmpty()){
                     return "No path found between Model id:" + fromNode + " and Model id:" + toNode;
                 }
+
+
                 StringBuilder pathStr = new StringBuilder();
                 pathStr.append("Shortest path from Model id: ").append(fromNode).append(" to Model id: ").append(toNode).append(" is:<br>");
                 pathStr.append("Start at Model id: ").append(fromNode).append("<br>");
@@ -479,6 +480,101 @@ public class SandboxService {
         return sb.toString();
     }
 
+    public String getPathFromUtoV(int id,int u,int v) {
+        GlobeManager globeManager = sandboxRegistry.get(id);
+        if (globeManager == null) {
+            return "Sandbox with ID " + id + " not found.";
+        }
+        Model fromModel = globeManager.findModelByID(String.valueOf(u));
+        Model toModel = globeManager.findModelByID(String.valueOf(v));
+        if (fromModel == null || toModel == null) {
+            return "One or both Model IDs not found.";
+        }
+        Algo algo = globeManager.getDijkstra();
+        List<double[]> pathLinks = algo.findShortestPath(fromModel, toModel);
+        if (pathLinks == null || pathLinks.isEmpty()) {
+            return "No path found between Model id:" + u + " and Model id:" + v;
+        }
+        StringBuilder pathStr = new StringBuilder();
+        pathStr.append("Shortest path from Model id: ").append(u).append(" to Model id: ").append(v).append(" is:<br>");
+        pathStr.append("Start at Model id: ").append(u).append("<br>");
+        for (double[] linkInfo : pathLinks) {
+            int modelId = (int) linkInfo[0];
+            double bandwidth = linkInfo[1];
+            pathStr.append("then move to Model id: ").append(modelId).append("<br>");
+        }
+        return pathStr.toString();
 
 
+    }
+
+    public String getCostFromUtoV(int id,int u,int v) {
+        GlobeManager globeManager = sandboxRegistry.get(id);
+        if (globeManager == null) {
+            return "Sandbox with ID " + id + " not found.";
+        }
+        Model fromModel = globeManager.findModelByID(String.valueOf(u));
+        Model toModel = globeManager.findModelByID(String.valueOf(v));
+        if (fromModel == null || toModel == null) {
+            return "One or both Model IDs not found.";
+        }
+        Algo algo = globeManager.getDijkstra();
+        double[] dist = algo.dijkstra(fromModel.getModelID(), toModel.getModelID());
+        if (dist == null || Double.isInfinite(dist[toModel.getModelID()])) {
+            return "No path found between Model id:" + u + " and Model id:" + v;
+        }
+        return "The cost from Model id: " + u + " to Model id: " + v + " is: " + dist[toModel.getModelID()];
+
+    }
+
+    public String getDistanceFromUtoAll(int id,int u) {
+        GlobeManager globeManager = sandboxRegistry.get(id);
+        if (globeManager == null) {
+            return "Sandbox with ID " + id + " not found.";
+        }
+        Model fromModel = globeManager.findModelByID(String.valueOf(u));
+        if(fromModel==null){
+            return "Model with ID " + u + " not found.";
+        }
+        Algo algo = globeManager.getDijkstra();
+        double[] dist = algo.dijkstra(fromModel.getModelID(),-1);
+        StringBuilder sb= new StringBuilder();
+        for(int i=0;i<dist.length;i++){
+            if(!Double.isInfinite(dist[i])){
+                sb.append("Distance from Model id: ").append(u).append(" to Model id: ").append(i).append(" is: ").append(dist[i]).append("<br>");
+            }
+            else
+            {
+                sb.append("Model id: ").append(i).append(" is unreachable from Model id: ").append(u).append("<br>");
+            }
+        }
+        return sb.toString();
+    }
+    public String getFullPathDetailsFromUtoV(int id,int u,int v) {
+        GlobeManager globeManager = sandboxRegistry.get(id);
+        if (globeManager == null) {
+            return "Sandbox with ID " + id + " not found.";
+        }
+        Model fromModel = globeManager.findModelByID(String.valueOf(u));
+        Model toModel = globeManager.findModelByID(String.valueOf(v));
+        if (fromModel == null || toModel == null) {
+            return "One or both Model IDs not found.";
+        }
+        Algo algo = globeManager.getDijkstra();
+        List<double[]> pathLinks = algo.findShortestPath(fromModel, toModel);
+        if (pathLinks == null || pathLinks.isEmpty()) {
+            return "No path found between Model id:" + u + " and Model id:" + v;
+        }
+        StringBuilder pathStr = new StringBuilder();
+        pathStr.append("Shortest path from Model id: ").append(u).append(" to Model id: ").append(v).append(" is:<br>");
+        pathStr.append("Start at Model id: ").append(u).append("<br>");
+        for (double[] linkInfo : pathLinks) {
+            int modelId = (int) linkInfo[0];
+            double bandwidth = linkInfo[1];
+            pathStr.append(" --[").append(bandwidth).append(" Kbps]--> Model id: ").append(modelId).append("<br>");
+        }
+        return pathStr.toString();
+
+
+    }
 }
