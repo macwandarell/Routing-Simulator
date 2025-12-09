@@ -26,6 +26,7 @@ public class DNSServer extends Model
         this.globeManager = globeManager;
 
     }
+
     public DNSServer(String ipv4, GlobeManager globeManager)
     {
         super();
@@ -47,22 +48,26 @@ public class DNSServer extends Model
 
 
 
-    private void loadRecords() {
+    private void loadRecords()
+    {
         String filePath = "dns_records.txt";
         File file = new File(filePath);
 
         // Check if file exists first
-        if (!file.exists()) {
+        if (!file.exists())
+        {
             System.out.println("No DNS record file found. Starting with empty database.");
             return; //stopping here since file doesn't exist
         }
 
         //Chaining  We wrap 'FileReader' (which reads 1 byte at a time) inside 'BufferedReader' (which reads chunks).
         // Benefit is this makes it faster and gives us the '.readLine()' method to process text line by line.
-        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(file)))
+        {
             String line;
             // Read line by line until the file ends (returns null)
-            while ((line = reader.readLine()) != null) {
+            while ((line = reader.readLine()) != null)
+            {
 
                 // Example line: "google.com,192.168.1.1"
                 String[] parts = line.split(",");
@@ -76,7 +81,8 @@ public class DNSServer extends Model
                     dnsRecords.put(domain, ip);
                 }
             }
-        } catch (IOException e) {
+        } catch (IOException e)
+        {
             System.out.println("Error loading DNS records: " + e.getMessage());
         }
     }
@@ -128,7 +134,8 @@ public class DNSServer extends Model
     {
         String cleanDomain = normalize(domainName);
 
-        if(validateDomain(cleanDomain)) {
+        if(validateDomain(cleanDomain))
+        {
             Model model = globeManager.findModelByIp(ipAddress);
             //implemented this to ensure domains map only to valid End-Servers, not to Routers or non-existent IPs.
             if(model == null || model.getType().compareTo("PublicServer") != 0){
@@ -141,7 +148,8 @@ public class DNSServer extends Model
             dnsRecords.put(cleanDomain, ipAddress);
             saveRecords();
 
-        }else{
+        }else
+        {
             throw new IllegalArgumentException("Domain name already taken: " + domainName);
         }
     }
@@ -150,7 +158,8 @@ public class DNSServer extends Model
     {
         String cleanDomain = normalize(domainName);
 
-        if (dnsRecords.containsKey(cleanDomain)) {
+        if (dnsRecords.containsKey(cleanDomain))
+        {
             dnsRecords.remove(cleanDomain);
             saveRecords();
             return true;
@@ -164,7 +173,8 @@ public class DNSServer extends Model
         String cleanDomain = normalize(domainName);
         String ip = dnsRecords.get(cleanDomain);
 
-        if (ip != null) {
+        if (ip != null)
+        {
             return ip;
         } else {
             return null;
@@ -177,7 +187,8 @@ public class DNSServer extends Model
         String cleanDomain = normalize(domainName);
         String ipAddress = dnsRecords.get(cleanDomain);
 
-        if (ipAddress == null) {
+        if (ipAddress == null)
+        {
             throw new IllegalArgumentException("Ping Error: Host not found [" + domainName + "]");
         }
         return new Ipv4(ipAddress);
