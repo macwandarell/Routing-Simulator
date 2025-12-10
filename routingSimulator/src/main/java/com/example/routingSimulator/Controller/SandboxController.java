@@ -1,12 +1,9 @@
 package com.example.routingSimulator.Controller;
 
 import com.example.routingSimulator.service.SandboxService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/play/sandbox")
@@ -71,6 +68,40 @@ public class SandboxController {
     public String getFullPathDetailsFromUtoV(@PathVariable int id,@PathVariable int u,@PathVariable int v)
     {
         return sandboxService.getFullPathDetailsFromUtoV(id,u,v);
+    }
+
+    @GetMapping("/{id}/links")
+    public String getAllLinks(@PathVariable int id){
+        return sandboxService.getAllLinks(id);
+    }
+
+    @GetMapping("/{id}/links/{u}/{v}")
+    public String getLinkDetails(@PathVariable int id,@PathVariable int u,@PathVariable int v) {
+        return sandboxService.getLinkDetails(id, u, v);
+    }
+
+    @GetMapping("/{id}/links/bandwidth/{u}/{v}")
+    public String getLinkBandwidth(@PathVariable int id,@PathVariable int u,@PathVariable int v) {
+        return sandboxService.getLinkBandwidth(id, u, v);
+    }
+
+    @GetMapping("/{id}/links/{u}")
+    public String getAllLinksFromU(@PathVariable int id,@PathVariable int u) {
+        return sandboxService.getAllLinksFromU(id, u);
+    }
+
+    @DeleteMapping("/{id}/links/{u}/{v}")
+    public ResponseEntity<String> deleteLink(@PathVariable int id,
+                                             @PathVariable int u,
+                                             @PathVariable int v) {
+
+        boolean deleted = sandboxService.deleteLink(id, u, v);
+
+        if (deleted) {
+            return ResponseEntity.ok("Link deleted successfully");
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Link not found");
+        }
     }
 
 }
