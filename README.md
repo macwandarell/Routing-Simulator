@@ -5,6 +5,8 @@ A small teaching and demonstration routing simulator written in Java (Spring Boo
 This repository contains a lightweight routing simulator with modules for devices, routers,
 DHCP, DNS server, and a few simple command utilities (ping, nslookup, nmap-like scanner).
 
+**Important Note:** All the responses are stored in HTML format (as we wanted to display them on the web page) in the "responses" folder. The corresponding requests are all stored in the requests.json file in the same folder.
+
 ## Project Goals
 - Provide a simple simulation environment for networking concepts (IP addressing, DHCP, DNS, routing).
 - Offer small command modules to exercise the simulated network.
