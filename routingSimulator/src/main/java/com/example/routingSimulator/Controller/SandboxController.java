@@ -18,7 +18,7 @@ public class SandboxController {
         return sandboxService.getWelcomeMessage();
     }
     @PostMapping
-    public String createSandbox(@RequestParam("json") String json) {
+    public String createSandbox(@RequestBody String json) {
         return sandboxService.createSandbox(json);
     }
     @GetMapping("/{id}")
@@ -26,7 +26,7 @@ public class SandboxController {
         return sandboxService.openSandbox(id);
     }
     @PostMapping("/{id}")
-    public String updateSandbox(@PathVariable int id, @RequestParam("json") String json) {
+    public String updateSandbox(@PathVariable int id, @RequestBody String json) {
         return sandboxService.updateSandbox(id, json);
     }
     @GetMapping("/{id}/managers")

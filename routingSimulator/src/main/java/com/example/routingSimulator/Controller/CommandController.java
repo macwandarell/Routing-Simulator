@@ -21,10 +21,10 @@ public class CommandController {
 
     //This runs when the user clicks 'Execute' on the Black Box (sends a POST request).
     //  @PathVariable: Captures the Sandbox ID (e.g., '1') from the URL.
-    // @RequestParam("json"): This is the LINK. It grabs the text typed inside the HTML <textarea name="json">.
+    // @RequestBody: This is the LINK. It grabs the text typed inside the HTML <textarea name="json">.
     // Action: We pass the raw text to the Service (the 'Kitchen') to parse and execute.
     @PostMapping
-    public String updateCommand(@PathVariable int id, @RequestParam("json") String json) {
+    public String updateCommand(@PathVariable int id, @RequestBody String json) {
         return commandService.updateCommand(id,json);
     }
 
