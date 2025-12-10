@@ -13,7 +13,7 @@ public class CommandController {
     }
 
 
-    //ogic: It asks the Service: "Give me the welcome message (HTML) for Sandbox 5.If the Sandbox ID is 5"
+    //Logic: It asks the Service: "Give me the welcome message (HTML) for Sandbox 5.If the Sandbox ID is 5"
     @GetMapping
     public String index(@PathVariable int id) {
         return commandService.getWelcomeMessage(id);
