@@ -38,7 +38,7 @@ Data is stored using simple file handling (TXT, JSON).
 The simulator accepts API-based input, processes it through a layered **Model → Service → Controller** architecture,  
 and stores persistent state in files (`dns_records.txt`, `network.json`, etc.).  
 This makes the project modular, lightweight, and easily extensible.
----
+
 
 ## Table of Contents
 - [Project Overview](#project-overview)
