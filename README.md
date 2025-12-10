@@ -13,6 +13,32 @@ DHCP, DNS server, and a few simple command utilities (ping, nslookup, nmap-like 
 **Status:** Use the instructions below to build, run, and extend.
 
 ---
+## Description
+
+The **Routing Sandbox** project is a lightweight **network simulator** developed in **Java (Spring Boot)**.  
+It provides a practical environment for simulating networking operations such as **ping**, **nmap**, and **nslookup**, along with building and visualizing **network topologies**.
+
+### Purpose
+To develop an educational and experimental routing simulator that helps users learn and test fundamental networking concepts and routing algorithms.
+
+### Scope
+The system supports:
+- Running network commands (ping, nslookup, nmap).
+- Building and managing network topologies with routers and devices.
+- Simulating routing algorithms like Dijkstra’s shortest path.
+- Managing DNS, DHCP, and IP allocations.
+Data is stored using simple file handling (TXT, JSON).
+
+### Intended Users
+- **Educational institutions** for networking courses.
+- **Network professionals** seeking a lightweight testing environment.
+- **Developers** and **learners** exploring routing and topology simulation.
+
+### System Overview
+The simulator accepts API-based input, processes it through a layered **Model → Service → Controller** architecture,  
+and stores persistent state in files (`dns_records.txt`, `network.json`, etc.).  
+This makes the project modular, lightweight, and easily extensible.
+---
 
 ## Table of Contents
 - [Project Overview](#project-overview)
