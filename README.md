@@ -25,8 +25,6 @@ DHCP, DNS server, and a few simple command utilities (ping, nslookup, nmap-like 
 - [API Endpoints](#api-endpoints)
 - [Development Notes & Guidelines](#development-notes--guidelines)
 - [Troubleshooting](#troubleshooting)
-- [License](#license)
-
 ---
 
 ## Project Overview
@@ -77,24 +75,6 @@ mvn spring-boot:run
 ```bash
 java -cp target/classes com.example.routingSimulator.Main
 ```
-
----
-
-## Running the Included Nmap-style Command
-
-`NmapCommand` can operate in two modes:
-
-- **In-Simulation:** When the `GlobeManager` manages the target device, the command reads simulated `activePorts`.
-- **Live-Scan:** When not in `simulateOnly` mode, the command attempts real TCP connections to a target IP/hostname.
-
-### Example Usage
-1. Create a `GlobeManager` instance.
-2. Retrieve the `DNSServer` using `globeManager.getDnsServer()`.
-3. Create a `Device`, add ports (`device.addPort(80)`), and register it under a `Manager`.
-4. Instantiate `NmapCommand` and execute:
-   ```java
-   nmapCommand.scan(host, startPort, endPort, timeout);
-   ```
 
 ---
 
@@ -218,5 +198,3 @@ Returns **detailed path information** between nodes *u* and *v*.
 
 ---
 
-## License
-This project is distributed for educational purposes. Contributors may extend or adapt the project for academic demonstrations or coursework.
