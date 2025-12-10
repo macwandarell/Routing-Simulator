@@ -1,0 +1,83 @@
+<div style="background-image: url('/banners/background.jpg'); background-size: cover; background-repeat: no-repeat; background-position: center; width: 100vw; height: 100vh; color: white; font-family: monospace; padding: 20px; box-sizing: border-box; background-color: rgba(0,0,0,0.5); overflow-y: auto;">┌───────┐<br>│Sandbox│<br>└───────┘<br><br><span style='color:yellow;'>Here is a list of the available commands (case doesn't matter)</span><br><a href='/play/sandbox/2' style='color:red;text-decoration:none;'>/play/sandbox/2</a>&nbsp;&nbsp;<span style='color:yellow;'>- The current page you are in</span><br><br><hr style='border-color:gray;'><br><h3 style='color:cyan;'>Create new manager in this Sandbox</h3><form method='POST' action='/play/sandbox/2' style='display:flex;flex-direction:column;max-width:400px;'><textarea name='json' style='height:150px;width:100%;background:black;color:white;border:1px solid gray;padding:10px;'>{
+  "addManager": {
+    "id": "manager1"
+  }
+}</textarea><button type='submit' style='margin-top:10px;padding:10px;background:darkred;border:none;color:white;'>Create Manager</button></form><br><hr style='border-color:gray;'><br><h3 style='color:cyan;'>Add new device in a particular manager in this Sandbox</h3><form method='POST' action='/play/sandbox/2' style='display:flex;flex-direction:column;max-width:400px;'><textarea name='json' style='height:150px;width:100%;background:black;color:white;border:1px solid gray;padding:10px;'>{
+  "addDevice": {
+    "managerId": "manager1",
+    "deviceId": "device1",
+    "deviceType": "device1"
+ }
+}</textarea><button type='submit' style='margin-top:10px;padding:10px;background:darkred;border:none;color:white;'>Add Device</button></form><br><hr style='border-color:gray;'><br><h3 style='color:cyan;'>Add dhcp ips to a particular manager dhcp in this Sandbox</h3><form method='POST' action='/play/sandbox/2' style='display:flex;flex-direction:column;max-width:400px;'><textarea name='json' style='height:150px;width:100%;background:black;color:white;border:1px solid gray;padding:10px;'>{
+  "addDhcpIpList": {
+    "managerId": "manager1",
+    "number": 50
+}
+}</textarea><button type='submit' style='margin-top:10px;padding:10px;background:darkred;border:none;color:white;'>Add IPs to DHCP</button></form><br><hr style='border-color:gray;'><br><h3 style='color:cyan;'>Add new link between 2 devices</h3><form method='POST' action='/play/sandbox/2' style='display:flex;flex-direction:column;max-width:400px;'><textarea name='json' style='height:150px;width:100%;background:black;color:white;border:1px solid gray;padding:10px;'>{
+  "addLink": {
+    "fromNode": "Model 1's id",
+    "toNode": "Model 2's id",
+    "LinkBandwidth": "1000",
+    "Type": "KBPS"
+ }
+}</textarea><button type='submit' style='margin-top:10px;padding:10px;background:darkred;border:none;color:white;'>Add Link</button></form><br><hr style='border-color:gray;'><br><h3 style='color:cyan;'>Add Port to a device</h3><form method='POST' action='/play/sandbox/2' style='display:flex;flex-direction:column;max-width:400px;'><textarea name='json' style='height:150px;width:100%;background:black;color:white;border:1px solid gray;padding:10px;'>{
+  "addPort": {
+    "modelID": "1",
+    "portNo": 1
+ }
+}</textarea><button type='submit' style='margin-top:10px;padding:10px;background:darkred;border:none;color:white;'>Add Port</button></form><br><hr style='border-color:gray;'><br><h3 style='color:cyan;'>Get Shortest Path between 2 devices</h3><form method='POST' action='/play/sandbox/2' style='display:flex;flex-direction:column;max-width:400px;'><textarea name='json' style='height:150px;width:100%;background:black;color:white;border:1px solid gray;padding:10px;'>{
+  "getshortestpath": {
+    "fromNode": "Model 1's id",
+    "toNode": "Model 2's id"
+ }
+}</textarea><button type='submit' style='margin-top:10px;padding:10px;background:darkred;border:none;color:white;'>Get Path</button></form><a href='/play/sandbox/2/command' style='color:red;text-decoration:none;'>/play/sandbox/2/command</a>&nbsp;&nbsp;<span style='color:yellow;'>- goes back to this sandbox page</span><br><a href='/play' style='color:red;text-decoration:none;'>/play</a>&nbsp;&nbsp;<span style='color:yellow;'>- goes back to the playground page</span><br><p style='color:yellow;'>Last action: Added link between Model id:2 and Model id:4</p><br></div><svg width="262px" height="159px"
+ viewBox="0.00 0.00 262.00 159.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1.0 1.0) rotate(0.0) translate(4.0 155.0)">
+<title>network</title>
+<polygon fill="white" stroke="none" points="-4,4 -4,-155 258,-155 258,4 -4,4"/>
+<!-- 2 -->
+<g id="node1" class="node">
+<title>2</title>
+<polygon fill="none" stroke="blue" points="189.38,-151 64.62,-151 64.62,-93.5 189.38,-93.5 189.38,-151"/>
+<text xml:space="preserve" text-anchor="middle" x="127" y="-133.7" font-family="Times,serif" font-size="14.00">Router</text>
+<text xml:space="preserve" text-anchor="middle" x="127" y="-117.2" font-family="Times,serif" font-size="14.00">ID: 2</text>
+<text xml:space="preserve" text-anchor="middle" x="127" y="-100.7" font-family="Times,serif" font-size="14.00"> IP: 10.107.207.227</text>
+</g>
+<!-- 3 -->
+<g id="node2" class="node">
+<title>3</title>
+<polygon fill="none" stroke="blue" points="118,-57.5 0,-57.5 0,0 118,0 118,-57.5"/>
+<text xml:space="preserve" text-anchor="middle" x="59" y="-40.2" font-family="Times,serif" font-size="14.00">Router</text>
+<text xml:space="preserve" text-anchor="middle" x="59" y="-23.7" font-family="Times,serif" font-size="14.00">ID: 3</text>
+<text xml:space="preserve" text-anchor="middle" x="59" y="-7.2" font-family="Times,serif" font-size="14.00"> IP: 10.191.211.47</text>
+</g>
+<!-- 2&#45;&#45;3 -->
+<g id="edge2" class="edge">
+<title>2&#45;&#45;3</title>
+<path fill="none" stroke="black" d="M99.95,-93.3C90.96,-82.05 81.34,-69.11 73.6,-57.84"/>
+</g>
+<!-- 4 -->
+<g id="node3" class="node">
+<title>4</title>
+<polygon fill="none" stroke="blue" points="254,-57.5 136,-57.5 136,0 254,0 254,-57.5"/>
+<text xml:space="preserve" text-anchor="middle" x="195" y="-40.2" font-family="Times,serif" font-size="14.00">Router</text>
+<text xml:space="preserve" text-anchor="middle" x="195" y="-23.7" font-family="Times,serif" font-size="14.00">ID: 4</text>
+<text xml:space="preserve" text-anchor="middle" x="195" y="-7.2" font-family="Times,serif" font-size="14.00"> IP: 172.28.34.147</text>
+</g>
+<!-- 2&#45;&#45;4 -->
+<g id="edge1" class="edge">
+<title>2&#45;&#45;4</title>
+<path fill="none" stroke="black" d="M141.5,-93.3C149.22,-82.05 158.84,-69.11 167.84,-57.84"/>
+</g>
+<!-- 3&#45;&#45;2 -->
+<g id="edge3" class="edge">
+<title>3&#45;&#45;2</title>
+<path fill="none" stroke="black" d="M86.16,-57.84C95.16,-69.11 104.78,-82.05 112.5,-93.3"/>
+</g>
+<!-- 4&#45;&#45;2 -->
+<g id="edge4" class="edge">
+<title>4&#45;&#45;2</title>
+<path fill="none" stroke="black" d="M180.4,-57.84C172.66,-69.11 163.04,-82.05 154.05,-93.3"/>
+</g>
+</g>
+</svg>

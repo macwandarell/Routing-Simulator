@@ -1,0 +1,1 @@
+Link between <br>First Model: ID: 2 IP: 172.25.19.249 Type: Router<br>Second Model: ID: 7 IP: 192.168.158.175 Type: Router<br>Bandwidth: 1000.0 MBPS<br><br>

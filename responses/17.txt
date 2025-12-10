@@ -1,0 +1,1 @@
+Shortest path from Model id: 5 to Model id: 7 is:<br>Start at Model id: 5<br> --[3000.0 Kbps]--> Model id: 1<br> --[1000.0 Kbps]--> Model id: 2<br> --[1024000.0 Kbps]--> Model id: 7<br>

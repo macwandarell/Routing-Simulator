@@ -1,0 +1,1 @@
+Shortest path from Model id: 4 to Model id: 6 is:<br>Start at Model id: 4<br>then move to Model id: 1<br>then move to Model id: 2<br>then move to Model id: 7<br>then move to Model id: 6<br>

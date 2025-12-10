@@ -1,0 +1,470 @@
+{
+	"info": {
+		"_postman_id": "c124b3da-6e07-4515-8742-8dc22a563a03",
+		"name": "project",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "50062451",
+		"_collection_link": "https://macwandarell-892255.postman.co/workspace/Darell-Macwan's-Workspace~2d04b1cb-54e1-4d33-8783-9a51c8d92cbb/collection/50062451-c124b3da-6e07-4515-8742-8dc22a563a03?action=share&source=collection_link&creator=50062451"
+	},
+	"item": [
+		{
+			"name": "http://localhost:8080/play/sandbox/2",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/play/sandbox/2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"play",
+						"sandbox",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/play/sandbox/2",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "json",
+							"value": "{\n  \"addManager\": {\n    \"id\": \"manager7\"\n  }\n}",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8080/play/sandbox/2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"play",
+						"sandbox",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/play/sandbox/2/managers",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/play/sandbox/2/managers",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"play",
+						"sandbox",
+						"2",
+						"managers"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/play/sandbox/1/manager1/devices",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/play/sandbox/1/manager1/devices",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"play",
+						"sandbox",
+						"1",
+						"manager1",
+						"devices"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/play/sandbox/1/6",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/play/sandbox/1/6",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"play",
+						"sandbox",
+						"1",
+						"6"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/play/sandbox/1/network",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/play/sandbox/1/network",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"play",
+						"sandbox",
+						"1",
+						"network"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/play/sandbox/1/links",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/play/sandbox/1/links",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"play",
+						"sandbox",
+						"1",
+						"links"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/play/sandbox/1/links/2/7",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/play/sandbox/1/links/2/7",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"play",
+						"sandbox",
+						"1",
+						"links",
+						"2",
+						"7"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/play/sandbox/1/links/bandwidth/1/4",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/play/sandbox/1/links/bandwidth/1/4",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"play",
+						"sandbox",
+						"1",
+						"links",
+						"bandwidth",
+						"1",
+						"4"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/play/sandbox/1/links/1",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/play/sandbox/1/links/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"play",
+						"sandbox",
+						"1",
+						"links",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/play/sandbox/2",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "json",
+							"value": "{\n  \"addDevice\": {\n    \"managerId\": \"manager7\",\n    \"deviceId\": \"D001\",\n    \"deviceType\": \"DHCP\"\n }\n}",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8080/play/sandbox/2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"play",
+						"sandbox",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/play/sandbox/2",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "json",
+							"value": "{\n  \"addDhcpIpList\": {\n    \"managerId\": \"manager7\",\n    \"number\": 50\n}\n}",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8080/play/sandbox/2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"play",
+						"sandbox",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/play/sandbox/2",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "json",
+							"value": "{\n  \"addLink\": {\n    \"fromNode\": \"2\",\n    \"toNode\": \"4\",\n    \"LinkBandwidth\": \"1000\",\n    \"Type\": \"KBPS\"\n }\n}",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8080/play/sandbox/2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"play",
+						"sandbox",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/play/sandbox/1",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "json",
+							"value": "{\n  \"addPort\": {\n    \"modelID\": \"4\",\n    \"portNo\": 25\n }\n}",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8080/play/sandbox/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"play",
+						"sandbox",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/play/sandbox/1/network/path/4/6",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/play/sandbox/1/network/path/4/6",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"play",
+						"sandbox",
+						"1",
+						"network",
+						"path",
+						"4",
+						"6"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/play/sandbox/1/network/path/cost/4/6",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/play/sandbox/1/network/path/cost/4/6",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"play",
+						"sandbox",
+						"1",
+						"network",
+						"path",
+						"cost",
+						"4",
+						"6"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/play/sandbox/1/network/distance/1",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/play/sandbox/1/network/distance/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"play",
+						"sandbox",
+						"1",
+						"network",
+						"distance",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/play/sandbox/1/network/fullpathDetails/5/7",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/play/sandbox/1/network/fullpathDetails/5/7",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"play",
+						"sandbox",
+						"1",
+						"network",
+						"fullpathDetails",
+						"5",
+						"7"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

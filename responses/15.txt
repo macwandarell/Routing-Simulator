@@ -1,0 +1,1 @@
+The cost from Model id: 4 to Model id: 6 is: 0.0015400390625

@@ -1,0 +1,1 @@
+Link Bandwidth between Model ID 1 and Model ID 4 is: 2000.0 Kbps
