@@ -77,7 +77,7 @@ public class Algo {
                 double cost=getCostfromBandwidth(e.getSpeed(LinkSpeedType.KBPS));
 
                 double nd=dist[u]+cost;
-                if(nd<dist[v])
+                if(nd<dist[v])// relax operation
                 {
                     dist[v]=nd;
                     prev[v]=u;
@@ -85,13 +85,13 @@ public class Algo {
                 }
             }
         }
-        this.lastPrev=prev;// used in re-construction
-        this.lastDist=dist;// same as above
+        this.lastPrev=prev;// used in re-construction store the prev array
+        this.lastDist=dist;// same as above store the dist array
         return dist;// returns the list we formed using dijkstra for re-construction of the path
     }
 
 
-    // gives the shortest path from Model u to Model v including all the inernal nodes with their respective Linkbandwidth
+    // gives the shortest path from Model u to Model v including all the internal nodes with their respective Link bandwidth
     public List<double[]> findShortestPath(Model u, Model v)
     {
 
@@ -99,13 +99,11 @@ public class Algo {
         int src=u.getModelID();
         int target=v.getModelID();
 
-        // throw exception for modelid is correct or not
-
         dijkstra(src,target); // creates the dist array and store in lastDist
 
         if(lastDist==null || Double.isInfinite(lastDist[target]))
         {
-            return new ArrayList<>();// unreachable then return null
+            return new ArrayList<>();// unreachable then return empty path
         }
 
         //reconstruct path
