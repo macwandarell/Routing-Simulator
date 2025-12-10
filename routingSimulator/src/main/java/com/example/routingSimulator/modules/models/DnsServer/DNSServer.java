@@ -7,6 +7,7 @@ import com.example.routingSimulator.modules.network.ip.Ipv4;
 import java.util.HashMap;
 import java.io.*;
 
+
 public class DNSServer extends Model
 {
     HashMap<String,String> dnsRecords; // Maps domain names to IP addresses
@@ -24,9 +25,9 @@ public class DNSServer extends Model
         loadRecords();
         this.id=id;
         this.globeManager = globeManager;
-
     }
 
+    //constructor overloading
     public DNSServer(String ipv4, GlobeManager globeManager)
     {
         super();
@@ -36,6 +37,8 @@ public class DNSServer extends Model
         this.globeManager = globeManager;
     }
 
+
+    //getters
     public String getServerIP()
     {
         return this.ipv4.getIpString();
@@ -46,8 +49,7 @@ public class DNSServer extends Model
         return dnsRecords;
     }
 
-
-
+    //for loading the records into the file of dns_records.txt
     private void loadRecords()
     {
         String filePath = "dns_records.txt";
@@ -91,6 +93,8 @@ public class DNSServer extends Model
         return this.id;
 
     }
+
+    //
     private void saveRecords()
     {
         String filePath = "dns_records.txt";
