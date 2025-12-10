@@ -16,16 +16,13 @@ import com.example.routingSimulator.modules.models.device.Device;
 import com.example.routingSimulator.modules.models.dhcp.Dhcp;
 import com.example.routingSimulator.modules.models.publicServer.PublicServer;
 import com.example.routingSimulator.modules.models.DnsServer.DNSServer;
-import java.util.ArrayList;
 
-
-
+import java.util.*;
 
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.List;
 
 @Service
 public class SandboxService {
@@ -574,7 +571,119 @@ public class SandboxService {
             pathStr.append(" --[").append(bandwidth).append(" Kbps]--> Model id: ").append(modelId).append("<br>");
         }
         return pathStr.toString();
+    }
 
+    public String getAllLinks(int id) {
+        StringBuilder sb = new StringBuilder();
 
+        GlobeManager globeManager = sandboxRegistry.get(id);
+        if (globeManager == null) {
+            return "Sandbox with ID " + id + " not found.";
+        }
+
+        Network network = globeManager.getNetwork();
+        ArrayList<ArrayList<Link>> adjList = network.getAdjList();
+
+        HashSet<Long> visited = new HashSet<>();
+
+        for (int i = 0; i < adjList.size(); i++) {
+            for (Link link : adjList.get(i)) {
+
+                // fancy way to avoid printing both directions of an undirected link
+                long minId = Math.min(link.getFirst().getModelID(), link.getSecond().getModelID());
+                long maxId = Math.max(link.getFirst().getModelID(), link.getSecond().getModelID());
+
+                // Shift the first ID 32 bits to the left and merge with the second ID
+                long key = (minId << 32) | (maxId & 0xFFFFFFFFL);
+
+                if (visited.contains(key)) {
+                    continue;
+                }
+
+//                sb.append("Link from Model ID ").append(link.getFirst().getModelID()).append(" ").append("(").append(link.getFirst().getType()).append(")")
+//                        .append(" to Model ID ").append(link.getSecond().getModelID()).append(" ").append("(").append(link.getSecond().getType()).append(")")
+//                  .append(" (Bandwidth: ").append(link.getSpeed(LinkSpeedType.KBPS)).append(" Kbps)<br>");
+
+                sb.append(link.toString().replace("\n","<br>")).append("<br>").append("<br>");
+
+                visited.add(key);
+            }
+        }
+
+        return sb.toString();
+    }
+
+    public String getLinkDetails(int id, int fromId, int toId) {
+        GlobeManager globeManager = sandboxRegistry.get(id);
+        if (globeManager == null) {
+            return "Sandbox with ID " + id + " not found.";
+        }
+
+        Network network = globeManager.getNetwork();
+        ArrayList<ArrayList<Link>> adjList = network.getAdjList();
+
+        for (Link link : adjList.get(fromId)) {
+            if (link.getSecond().getModelID() == toId) {
+                return link.toString().replace("\n","<br>") + "<br><br>";
+            }
+        }
+
+        return "No link found between Model ID " + fromId + " and Model ID " + toId;
+    }
+
+    public String getLinkBandwidth(int id, int fromId, int toId) {
+        GlobeManager globeManager = sandboxRegistry.get(id);
+        if (globeManager == null) {
+            return "Sandbox with ID " + id + " not found.";
+        }
+
+        Network network = globeManager.getNetwork();
+        ArrayList<ArrayList<Link>> adjList = network.getAdjList();
+
+        for (Link link : adjList.get(fromId)) {
+            if (link.getSecond().getModelID() == toId) {
+                return "Link Bandwidth between Model ID " + fromId + " and Model ID " + toId + " is: "
+                        + link.getSpeed(LinkSpeedType.KBPS) + " Kbps";
+            }
+        }
+
+        return "No link found between Model ID " + fromId + " and Model ID " + toId;
+    }
+
+    public String getAllLinksFromU(int id,int u) {
+        StringBuilder sb = new StringBuilder();
+
+        GlobeManager globeManager = sandboxRegistry.get(id);
+        if (globeManager == null) {
+            return "Sandbox with ID " + id + " not found.";
+        }
+
+        Network network = globeManager.getNetwork();
+        ArrayList<ArrayList<Link>> adjList = network.getAdjList();
+
+        Model model = globeManager.findModelByID(String.valueOf(u));
+        if(model==null){
+            return "Model with ID " + u + " not found.";
+        }
+
+        sb.append("Links from Model ID: ").append(u).append(" IP: ").append(model.getIpv4()).append(" Type: ").append(model.getType()).append(" :<br>");
+
+        for (Link link : adjList.get(u)) {
+            sb.append("  -> Model ID: ").append(link.getSecond().getModelID()).append(" IP: ").append(link.getSecond().getIpv4()).append(" Type: ").append(link.getSecond().getType())
+              .append(" (Bandwidth: ").append(link.getSpeed(LinkSpeedType.KBPS)).append(" Kbps)<br>");
+        }
+
+        return sb.toString();
+    }
+
+    public Boolean deleteLink(int id, int fromId, int toId) {
+        GlobeManager globeManager = sandboxRegistry.get(id);
+        if (globeManager == null) {
+            return false;
+        }
+
+        Network network = globeManager.getNetwork();
+
+        return network.removeEdge(fromId, toId);
     }
 }

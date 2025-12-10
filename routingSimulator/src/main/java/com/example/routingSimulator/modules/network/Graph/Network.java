@@ -52,6 +52,32 @@ public class Network {
 //        System.out.println("Algo add edge v");
     }
 
+    public boolean removeEdge(int u,int v)
+    {
+        boolean removed=false;
+        ArrayList<Link> edgesFromU=adjList.get(u);
+        for(int i=0;i<edgesFromU.size();i++)
+        {
+            if(edgesFromU.get(i).getSecond().getModelID()==v)
+            {
+                edgesFromU.remove(i);
+                removed=true;
+                break;
+            }
+        }
+        ArrayList<Link> edgesFromV=adjList.get(v);
+        for(int i=0;i<edgesFromV.size();i++)
+        {
+            if(edgesFromV.get(i).getSecond().getModelID()==u)
+            {
+                edgesFromV.remove(i);
+                removed=true;
+                break;
+            }
+        }
+        return removed;
+    }
+
     // add all the methods mentioned in SRS
 
 

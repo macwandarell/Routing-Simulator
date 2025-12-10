@@ -65,4 +65,10 @@ public class Link {
     public void setType(LinkSpeedType type) {
         this.type = type;
     }
+
+    public String toString(){
+        return "Link between \n" + "First Model: ID: " + first.getModelID() + " IP: " + first.getIpv4() + " Type: " + first.getType() + "\n" +
+               "Second Model: ID: " + second.getModelID() + " IP: " + second.getIpv4() + " Type: " + second.getType() + "\n" +
+               "Bandwidth: " + bandwidth + " " + type;
+    }
 }
