@@ -41,12 +41,12 @@ public class SandboxController {
     public String getOpenPorts(@PathVariable int id,@PathVariable String deviceid){
         return sandboxService.getAllPorts(id,deviceid);
     }
-    @GetMapping("/{id}/network")
+    @GetMapping("/{id}/network")// the whole network graph
     public String getNetworkGraph(@PathVariable int id){
         return sandboxService.getNetworkGraph(id);
     }
 
-    @GetMapping("/{id}/network/path/{u}/{v}")
+    @GetMapping("/{id}/network/path/{u}/{v}")//the actual path from u to v
     public String getPathFromUtoV(@PathVariable int id,@PathVariable int u,@PathVariable int v)
     {
         return sandboxService.getPathFromUtoV(id,u,v);
@@ -58,13 +58,13 @@ public class SandboxController {
         return sandboxService.getCostFromUtoV(id,u,v);
     }
 
-    @GetMapping("/{id}/network/distance/{u}")
+    @GetMapping("/{id}/network/distance/{u}")//distance from u to all other nodes
     public String getDistanceFromUtoAll(@PathVariable int id,@PathVariable int u)
     {
         return sandboxService.getDistanceFromUtoAll(id,u);
     }
 
-    @GetMapping("{id}/network/fullpathDetails/{u}/{v}")
+    @GetMapping("{id}/network/fullpathDetails/{u}/{v}")//full path details from u to v
     public String getFullPathDetailsFromUtoV(@PathVariable int id,@PathVariable int u,@PathVariable int v)
     {
         return sandboxService.getFullPathDetailsFromUtoV(id,u,v);
