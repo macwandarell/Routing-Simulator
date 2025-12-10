@@ -2,6 +2,7 @@ package com.example.routingSimulator.modules.manager;
 import com.example.routingSimulator.modules.models.Model;
 import java.util.ArrayList;
 
+
 import com.example.routingSimulator.modules.models.device.Device;
 import com.example.routingSimulator.modules.models.dhcp.Dhcp;
 import com.example.routingSimulator.modules.models.publicServer.PublicServer;
@@ -50,7 +51,7 @@ public class Manager{
     public String getPublicServerId(){if(publicServer!=null){return publicServer.getId();} return null;}
     public void setPublicIp(String ipv4){this.publicIp=ipv4;}
     public String viewDetails(){
-       return this.managerID;
+        return this.managerID;
     }
     public void addIpToDhcp(String ipv4){
         dhcpServer.addIpToList(ipv4);
